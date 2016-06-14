@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="TRANSLATE">
+    <file>images/cursor.png</file>
+    </qresource>
+</RCC>
