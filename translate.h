@@ -125,21 +125,28 @@ public:
 		void error();
 		
 protected:
-	void keyPressEvent(QKeyEvent*   pe);
+	void keyPressEvent(QKeyEvent* pe);
 	bool event(QEvent* pe); // переключение на английский ввод при активном окне
-	void closeEvent(QCloseEvent* event)
+	void closeEvent(QCloseEvent* pcle)
 	{
 		if (saveCache())
 		{
 			qDebug() << "closeEvent is accept";
-			event->accept();
+			pcle ->accept();
 		} 
 		else 
 		{
 			qDebug() << "closeEvent is ignore";
-			event->ignore();
+			pcle ->ignore();
 		}
 	}
+
+//protected:
+//	void mousePressEvent(QMouseEvent* pme)
+//	{
+//		if (pme ->button() == Qt::RightButton)
+//			qDebug() << "Qt::RightButton";
+//	}
 };
 
 //void extractFiles(const QStringList& listFiles, MyWidget*);

@@ -118,6 +118,7 @@ public:
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         cacheWord->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+        cacheWord->setIconSize(QSize(20, 20));
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);
         label->setObjectName(QString::fromUtf8("label"));

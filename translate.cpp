@@ -45,10 +45,11 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	if (loadCache())
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
 
-	/*for (int i = 0; i < uiForm ->cacheWord ->count(); ++i)
+	for (int i = 0; i < uiForm ->cacheWord ->count(); ++i)
 	{
-		uiForm ->cacheWord ->item(i) ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
-	}*/
+		/*uiForm ->cacheWord ->item(i) ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);*/
+		uiForm ->cacheWord ->item(i) ->setIcon(QPixmap("images/cursor.png"));
+	}
 	
 	mpClipboard = QApplication::clipboard(); 
 	fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
