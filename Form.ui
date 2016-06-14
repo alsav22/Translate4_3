@@ -429,12 +429,12 @@
    <slot>choiceItemFromCacheWord(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>684</x>
-     <y>388</y>
+     <x>707</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
-     <x>686</x>
-     <y>438</y>
+     <x>709</x>
+     <y>440</y>
     </hint>
    </hints>
   </connection>
