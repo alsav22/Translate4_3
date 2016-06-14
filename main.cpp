@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     myWidget.show();
 	
 	
-	//PostMessage(GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 1, 0x04090409);
+	
 	
 	return app.exec();
 }
