@@ -52,7 +52,7 @@ public:
         font.setPointSize(10);
         Form->setFont(font);
         Form->setCursor(QCursor(Qt::ArrowCursor));
-        Form->setFocusPolicy(Qt::NoFocus);
+        Form->setFocusPolicy(Qt::WheelFocus);
         lineEditInput = new QLineEdit(Form);
         lineEditInput->setObjectName(QString::fromUtf8("lineEditInput"));
         lineEditInput->setGeometry(QRect(30, 70, 421, 41));
@@ -117,6 +117,7 @@ public:
         cacheWord->setGeometry(QRect(480, 260, 421, 151));
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        cacheWord->setFocusPolicy(Qt::WheelFocus);
         cacheWord->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
         cacheWord->setIconSize(QSize(20, 20));
         cacheWord->setSortingEnabled(true);

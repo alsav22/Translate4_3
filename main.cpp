@@ -36,6 +36,10 @@ int main(int argc, char **argv)
 	myWidget.move(700, 400);
 
     myWidget.show();
+
+	qDebug() << myWidget.uiForm ->listWidgetFiles ->currentRow();
+	qDebug() << myWidget.uiForm ->cacheWord ->currentRow();
+	qDebug() << myWidget.uiForm ->lineEditInput ->isActiveWindow();
 	
 	return app.exec();
 }

@@ -20,7 +20,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::NoFocus</enum>
+   <enum>Qt::WheelFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Произношение</string>
@@ -247,6 +247,9 @@
    </property>
    <property name="cursor" stdset="0">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::WheelFocus</enum>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
