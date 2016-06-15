@@ -854,9 +854,9 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 
 void  MyWidget::pressKeyYesModifier(const Qt::KeyboardModifiers& keyModifiers, const int codeKey)
 {
-	// Установка и снятие radioButtonRepeat ("Повторять") (если Shift + Alt + ->)
-	//if (codeKey == Qt::Key_Right && (keyModifiers & Qt::ShiftModifier) && (keyModifiers & Qt::AltModifier)) 
 	// Установка и снятие radioButtonRepeat ("Повторять") (если Alt + <-)
+	// (если Shift + Alt + ->)
+	// if (codeKey == Qt::Key_Right && (keyModifiers & Qt::ShiftModifier) && (keyModifiers & Qt::AltModifier)) 
 	if (codeKey == Qt::Key_Left && (keyModifiers & Qt::AltModifier)) 
 	{
 		changeStateButton(uiForm ->radioButtonRepeat);
