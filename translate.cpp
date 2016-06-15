@@ -45,11 +45,11 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	if (loadCache())
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
 
-	for (int i = 0; i < uiForm ->cacheWord ->count(); ++i)
-	{
-		/*uiForm ->cacheWord ->item(i) ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);*/
-		uiForm ->cacheWord ->item(i) ->setIcon(QPixmap("images/cursor.png"));
-	}
+	//for (int i = 0; i < uiForm ->cacheWord ->count(); ++i)
+	//{
+	//	/*uiForm ->cacheWord ->item(i) ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);*/
+	//	uiForm ->cacheWord ->item(i) ->setIcon(QPixmap("images/cursor.png"));
+	//}
 	
 	mpClipboard = QApplication::clipboard(); 
 	fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
@@ -815,23 +815,42 @@ qDebug() << "define Q_OS_LINUX";
 
 void MyWidget::pressKeyNoModifier(const int codeKey)
 {
-	// стрелка вверх, и первый элемент в кеше в фокусе
-	if (codeKey == Qt::Key_Up && uiForm ->cacheWord ->hasFocus() && uiForm ->cacheWord ->item(0) ->isSelected())
+	if (uiForm ->cacheWord ->count() != 0) // если кеш не пуст
 	{
-		uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
-		return;
-	}
-	// стрелка вниз, когда фокус в строке ввода, и список файлов пуст, а кеш не пуст
-	if (codeKey == Qt::Key_Down && uiForm ->lineEditInput ->hasFocus() 
-		                        && uiForm ->listWidgetFiles ->count() == 0
-								&& uiForm ->cacheWord ->count() != 0)
-	{
-		uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-		uiForm ->cacheWord ->currentItem() ->setSelected(true);
-		return;
+		// стрелка влево
+		if (codeKey == Qt::Key_Right) 
+		{
+			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+			uiForm ->cacheWord ->currentItem() ->setSelected(true);
+			return;
+		}
+		// стрелка вверх, и первый элемент в кеше в фокусе
+		if (codeKey == Qt::Key_Up && uiForm ->cacheWord ->hasFocus() && uiForm ->cacheWord ->item(0) ->isSelected())
+		{
+			uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+			return;
+		}
+		// стрелка вниз, когда фокус в строке ввода, и список файлов пуст
+		if (codeKey == Qt::Key_Down && uiForm ->lineEditInput ->hasFocus() && uiForm ->listWidgetFiles ->count() == 0)
+		{
+			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+			uiForm ->cacheWord ->currentItem() ->setSelected(true);
+			return;
+		}
+	
+		// удаление из кеша
+		if (codeKey == Qt::Key_Delete && uiForm ->cacheWord ->hasFocus())
+		{
+			mCacheFiles.remove(uiForm ->cacheWord ->currentItem() ->text());
+			uiForm ->cacheWord ->takeItem(uiForm ->cacheWord ->currentRow());
+			// когда кеш путс, то фокус в строку ввода
+			if (uiForm ->cacheWord ->count() == 0)
+				uiForm ->lineEditInput ->setFocus(); 
+			return;
+		}
 	}
 	
-	if (uiForm ->listWidgetFiles ->count() != 0 && uiForm ->listWidgetFiles ->count() != 0) // лист файлов и кеш не пустые
+	if (uiForm ->listWidgetFiles ->count() != 0) // если лист файлов не пуст
 	{
 		switch (codeKey)
 		{
@@ -839,13 +858,8 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 				uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
 			break;
-		    case Qt::Key_Right : // стрелка вправо
-				uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-				uiForm ->cacheWord ->currentItem() ->setSelected(true);
-			break;
-			
+		
 			case Qt::Key_Down : // стрелка вниз и
-				
 			if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
 			{
 				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
@@ -853,22 +867,34 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 			}
 			// последн€€ строка, в листе файлов, в фокусе 
 			else if (uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->count() - 1) ->isSelected())
-						uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+					uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
 			break;
 			
 			case Qt::Key_Up : // стрелка вверх и
-				
-			if (uiForm ->listWidgetFiles ->hasFocus() && uiForm ->listWidgetFiles ->item(0) ->isSelected()) // первый элемент, в листе файлов, в фокусе
-				uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
-			else if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
-				 {
+				if (uiForm ->listWidgetFiles ->hasFocus() && uiForm ->listWidgetFiles ->item(0) ->isSelected()) // первый элемент, в листе файлов, в фокусе
+					uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+				else if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
+				{
 					uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 					uiForm ->listWidgetFiles ->setCurrentRow(uiForm ->listWidgetFiles ->count() - 1);
-				 }
-			//else if ((uiForm ->cacheWord ->hasFocus() && uiForm ->cacheWord ->item(0) ->isSelected())) // первый элемент в кеше в фокусе
-			//		uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+				}
 			break;
 		}
+
+		//if (uiForm ->cacheWord ->count() != 0) // если и лист файлов и кеш не пустые
+		//{
+		//	switch (codeKey)
+		//	{
+		//		case Qt::Key_Left : // стрелка влево
+		//			uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
+		//			uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
+		//		break;
+		//		case Qt::Key_Right : // стрелка вправо
+		//			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+		//			uiForm ->cacheWord ->currentItem() ->setSelected(true);
+		//		break;
+		//	}
+		//}
 	}
 }
 
