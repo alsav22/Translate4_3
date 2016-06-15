@@ -843,7 +843,7 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		{
 			mCacheFiles.remove(uiForm ->cacheWord ->currentItem() ->text());
 			uiForm ->cacheWord ->takeItem(uiForm ->cacheWord ->currentRow());
-			// когда кеш путс, то фокус в строку ввода
+			// когда кеш пуст, то фокус в строку ввода
 			if (uiForm ->cacheWord ->count() == 0)
 				uiForm ->lineEditInput ->setFocus(); 
 			return;
