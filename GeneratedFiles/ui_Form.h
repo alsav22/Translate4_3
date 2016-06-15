@@ -146,7 +146,7 @@ public:
         labelInput->setText(QApplication::translate("Form", "\320\220\320\275\320\263\320\273\320\270\320\271\321\201\320\272\320\276\320\265 \321\201\320\273\320\276\320\262\320\276  (Enter) :", 0, QApplication::UnicodeUTF8));
         labelOutput->setText(QString());
         commandLinkButton->setText(QApplication::translate("Form", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \321\204\320\260\320\271\320\273", 0, QApplication::UnicodeUTF8));
-        radioButtonRepeat->setText(QApplication::translate("Form", " \320\237\320\276\320\262\321\202\320\276\321\200\321\217\321\202\321\214 (Shift + Alt + \342\206\222)", 0, QApplication::UnicodeUTF8));
+        radioButtonRepeat->setText(QApplication::translate("Form", " \320\237\320\276\320\262\321\202\320\276\321\200\321\217\321\202\321\214 (Alt + \342\206\220)", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("Form", "\320\227\320\262\321\203\320\272\320\276\320\262\321\213\320\265 \321\204\320\260\320\271\320\273\321\213:", 0, QApplication::UnicodeUTF8));
         checkBox->setText(QApplication::translate("Form", "\320\222\321\213\320\262\320\265\321\201\321\202\320\270 \321\201\320\273\320\276\320\262\320\276\321\201\320\276\321\207\320\265\321\202\320\260\320\275\320\270\321\217 (Alt + \342\206\222)", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("Form", "\320\232\320\265\321\210:", 0, QApplication::UnicodeUTF8));

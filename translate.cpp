@@ -813,88 +813,80 @@ qDebug() << "define Q_OS_LINUX";
 	
 }
 
+void MyWidget::pressKeyNoModifier(const int codeKey)
+{
+	if (uiForm ->listWidgetFiles ->count() != 0 && uiForm ->listWidgetFiles ->count()) // лист файлов и кеш не пустые
+	{
+		switch (codeKey)
+		{
+			case Qt::Key_Left : // стрелка влево
+				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
+			break;
+		    case Qt::Key_Right : // стрелка вправо
+				uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+			break;
+			
+			case Qt::Key_Down : // стрелка вниз и
+				
+			if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
+			{
+				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
+				uiForm ->listWidgetFiles ->setCurrentRow(0);
+			}
+			// последняя строка, в листе файлов, в фокусе 
+			else if (uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->count() - 1) ->isSelected())
+						uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+			break;
+			
+			case Qt::Key_Up : // стрелка вверх и
+				
+			if (uiForm ->listWidgetFiles ->hasFocus() && uiForm ->listWidgetFiles ->item(0) ->isSelected()) // первый элемент, в листе файлов, в фокусе
+				uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+			else if(uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
+				 {
+					uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
+					uiForm ->listWidgetFiles ->setCurrentRow(uiForm ->listWidgetFiles ->count() - 1);
+				 }
+			break;
+		}
+	}
+}
+
+void  MyWidget::pressKeyYesModifier(const Qt::KeyboardModifiers& keyModifiers, const int codeKey)
+{
+	// Установка и снятие radioButtonRepeat ("Повторять") (если Shift + Alt + ->)
+	//if (codeKey == Qt::Key_Right && (keyModifiers & Qt::ShiftModifier) && (keyModifiers & Qt::AltModifier)) 
+	// Установка и снятие radioButtonRepeat ("Повторять") (если Alt + <-)
+	if (codeKey == Qt::Key_Left && (keyModifiers & Qt::AltModifier)) 
+	{
+		changeStateButton(uiForm ->radioButtonRepeat);
+		return;
+	}
+	
+	// Установка и снятие checkBox ("Вывести словосочетания") (если Alt + ->)
+	if (codeKey == Qt::Key_Right && (keyModifiers & Qt::AltModifier)) 
+	{
+		changeStateButton(uiForm ->checkBox);
+		
+		uiForm ->lineEditInput ->setFocus();
+		return;
+	}
+}
+
 // Обработка нажатия клавиш управления
 void MyWidget::keyPressEvent(QKeyEvent* pe)
 {
-	
 	int codeKey = pe ->key();
+	Qt::KeyboardModifiers keyModifiers = pe ->modifiers();
 	
 	//qDebug() << pe ->nativeVirtualKey();
 	//qDebug() << codeKey;
 	//qDebug() << (pe ->modifiers() & Qt::ShiftModifier);
 	
-	Qt::KeyboardModifiers keyModifiers = pe ->modifiers();
-	
-	// Установка и снятие radioButtonRepeat ("Повторять")
-	if (codeKey == Qt::Key_Right && (keyModifiers & Qt::ShiftModifier) && (keyModifiers & Qt::AltModifier)) // если Shift + Alt + ->
-	{
-		changeStateButton(uiForm ->radioButtonRepeat);
-		
-		QWidget::keyPressEvent(pe);
-	    return;
-	}
-	
-	// Установка и снятие checkBox ("Вывести словосочетания")
-	if (codeKey == Qt::Key_Right && (keyModifiers & Qt::AltModifier)) // если Alt + ->
-	{
-		changeStateButton(uiForm ->checkBox);
-		
-		uiForm ->lineEditInput ->setFocus();
-		QWidget::keyPressEvent(pe);
-	    return;
-	}
-	//....................................................
-	
-	if (keyModifiers == Qt::NoModifier) // нажата клавиша без модификатора
-	{
-		if (uiForm ->listWidgetFiles ->count() != 0) // лист файлов не пуст
-		{
-			switch (codeKey)
-			{
-				case Qt::Key_Down : // если стрелка вниз и
-				
-					if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
-					{
-						uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
-						uiForm ->listWidgetFiles ->setCurrentRow(0);
-					}
-					// последняя строка, в листе файлов, в фокусе 
-					else if (uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->count() - 1) ->isSelected())
-								uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
-					break;
-				case Qt::Key_Up : // если стрелка вверх и
-				
-					if (uiForm ->listWidgetFiles ->hasFocus() && uiForm ->listWidgetFiles ->item(0) ->isSelected()) // первый элемент, в листе файлов, в фокусе
-						uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
-					else if(uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
-						 {
-							uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
-							uiForm ->listWidgetFiles ->setCurrentRow(uiForm ->listWidgetFiles ->count() - 1);
-						 }
-					break;
-				case Qt::Key_Left : // если стрелка влево и
-					if (uiForm ->cacheWord ->currentRow() != -1) //
-						uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
-					break;
-				case Qt::Key_Right : // если стрелка вправо и
-					// окно листа файлов активно или фокус в строке ввода
-					if ((uiForm ->listWidgetFiles ->currentRow() != -1) || uiForm ->lineEditInput ->hasFocus()) 
-						uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-					break;
-			}
-			//QWidget::keyPressEvent(pe);
-		}
-		else // если лист файлов пустой
-		{    
-			if (codeKey == Qt::Key_Right) // если стрелка вправо и фокус в строке ввода
-					uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-			if (uiForm ->cacheWord ->isActiveWindow() == false)
-				uiForm ->lineEditInput ->setFocus();
-		}
-		
-	}
-	qDebug() << uiForm ->cacheWord ->isActiveWindow();
-	qDebug() << uiForm ->listWidgetFiles ->currentRow();
+	if (keyModifiers == Qt::NoModifier)
+		pressKeyNoModifier(codeKey);
+	else
+		pressKeyYesModifier(keyModifiers, codeKey);
 	
 	QWidget::keyPressEvent(pe);
 }

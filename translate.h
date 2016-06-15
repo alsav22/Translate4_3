@@ -101,6 +101,9 @@ public:
 		inline void addCache();
 		inline bool loadCache();
 		inline bool saveCache();
+
+		inline void pressKeyNoModifier(const int codeKey);
+		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
 	    
 		~MyWidget()
 		{

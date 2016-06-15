@@ -160,7 +160,7 @@
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="text">
-    <string> Повторять (Shift + Alt + →)</string>
+    <string> Повторять (Alt + ←)</string>
    </property>
   </widget>
   <widget class="QSpinBox" name="spinBox">
