@@ -98,6 +98,7 @@ public:
 	    inline QStringList getStringListName(const QList <SoundFile*>& listPsoundFile);
 	    inline void play(QString& AbsFilePath);
 		inline void changeStateButton(QAbstractButton* pButton);
+		
 		inline void addCache();
 		inline bool loadCache();
 		inline bool saveCache();

@@ -815,15 +815,33 @@ qDebug() << "define Q_OS_LINUX";
 
 void MyWidget::pressKeyNoModifier(const int codeKey)
 {
-	if (uiForm ->listWidgetFiles ->count() != 0 && uiForm ->listWidgetFiles ->count()) // лист файлов и кеш не пустые
+	// стрелка вверх, и первый элемент в кеше в фокусе
+	if (codeKey == Qt::Key_Up && uiForm ->cacheWord ->hasFocus() && uiForm ->cacheWord ->item(0) ->isSelected())
+	{
+		uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
+		return;
+	}
+	// стрелка вниз, когда фокус в строке ввода, и список файлов пуст, а кеш не пуст
+	if (codeKey == Qt::Key_Down && uiForm ->lineEditInput ->hasFocus() 
+		                        && uiForm ->listWidgetFiles ->count() == 0
+								&& uiForm ->cacheWord ->count() != 0)
+	{
+		uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+		uiForm ->cacheWord ->currentItem() ->setSelected(true);
+		return;
+	}
+	
+	if (uiForm ->listWidgetFiles ->count() != 0 && uiForm ->listWidgetFiles ->count() != 0) // лист файлов и кеш не пустые
 	{
 		switch (codeKey)
 		{
 			case Qt::Key_Left : // стрелка влево
 				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
+				uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
 			break;
 		    case Qt::Key_Right : // стрелка вправо
 				uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
+				uiForm ->cacheWord ->currentItem() ->setSelected(true);
 			break;
 			
 			case Qt::Key_Down : // стрелка вниз и
@@ -842,11 +860,13 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 				
 			if (uiForm ->listWidgetFiles ->hasFocus() && uiForm ->listWidgetFiles ->item(0) ->isSelected()) // первый элемент, в листе файлов, в фокусе
 				uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
-			else if(uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
+			else if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
 				 {
 					uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 					uiForm ->listWidgetFiles ->setCurrentRow(uiForm ->listWidgetFiles ->count() - 1);
 				 }
+			//else if ((uiForm ->cacheWord ->hasFocus() && uiForm ->cacheWord ->item(0) ->isSelected())) // первый элемент в кеше в фокусе
+			//		uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
 			break;
 		}
 	}
