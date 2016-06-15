@@ -880,21 +880,6 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 				}
 			break;
 		}
-
-		//if (uiForm ->cacheWord ->count() != 0) // если и лист файлов и кеш не пустые
-		//{
-		//	switch (codeKey)
-		//	{
-		//		case Qt::Key_Left : // стрелка влево
-		//			uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
-		//			uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
-		//		break;
-		//		case Qt::Key_Right : // стрелка вправо
-		//			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-		//			uiForm ->cacheWord ->currentItem() ->setSelected(true);
-		//		break;
-		//	}
-		//}
 	}
 }
 
