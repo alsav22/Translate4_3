@@ -64,13 +64,13 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	{
 		uiForm ->lineEditInput ->setText(mpClipboard ->text());
 		quint32 n = getIndexString(mCurrentListFileName, uiForm ->lineEditInput ->text(), "OneWord");
-		if (n == -1)
+		if (n == -1) // если слова нет в списке
 			uiForm ->lineEditInput ->setFocus();
 		else
 		{
 			qDebug() << "Index = " << n;
 			quint32 m = uniqueFileName(mCurrentListFileName, uiForm ->lineEditInput ->text());
-			if (m == 1)
+			if (m == 1) // если слово одно в списке
 				uiForm ->listWidgetFiles ->setCurrentRow(n);
 			else
 				uiForm ->listWidgetFiles ->setCurrentRow(mCurrentIndex);
@@ -99,6 +99,7 @@ bool MyWidget::containsFileName(const QStringList& strListFiles, const QString& 
 	return false;
 }
 
+// количство файлов с таким словом в списке
 quint32 MyWidget::uniqueFileName(const QStringList& strListFiles, const QString& word)
 {
 	quint32 count = 0;
@@ -599,7 +600,9 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	
 	showFilesFound();
 	setNewCurrentIndex(0);
-	play(mCurrentAbsFilePath); // воспроизведение файла 
+	mpClipboard ->setText(mCurrentWord);
+	
+	play(mCurrentAbsFilePath);
 }
 
 // Воспроизведение файла
@@ -625,8 +628,8 @@ void MyWidget::setNewCurrentIndex(quint32 newInd)
 		mCurrentAbsFilePath = mCurrentListAbsFilePath[mCurrentIndex];
 		uiForm ->listWidgetFiles ->setCurrentRow(mCurrentIndex);
 		mCurrentWord = SoundFile::extractWordGroup(mCurrentFileName);
-		uiForm ->labelOutput ->setText(mCurrentWord);
 		uiForm ->lineEditInput ->setText(mCurrentWord);
+		uiForm ->labelOutput ->setText(mCurrentWord);
 	}
 }
 		
