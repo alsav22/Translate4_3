@@ -592,19 +592,21 @@ bool MyWidget::saveCache()
 
 void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
 {
-	//uiForm ->lineEditInput ->setText(item ->text());
-	//mCurrentAbsFilePath = mCacheFiles.value(item ->text());
-	QString AbsFilePath = mCacheFiles.value(item ->text());
-	//mpClipboard ->setText(item ->text());
-	play(AbsFilePath); // воспроизведение файла 
+	mCurrentListFileName.clear();
+	mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
+	mCurrentListAbsFilePath.clear();
+	mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
 	
-    //pressedEnter();
+	showFilesFound();
+	setNewCurrentIndex(0);
+	play(mCurrentAbsFilePath); // воспроизведение файла 
 }
 
 // Воспроизведение файла
 void MyWidget::play(QString& AbsFilePath)
 {
-	qDebug() << "mCurrentAbsFilePath = " << AbsFilePath;
+	qDebug() << "AbsFilePath = " << AbsFilePath;
+	qDebug() << "mCurrentAbsFilePath = " << mCurrentAbsFilePath;
 	if (!GlobalVariables::getGlobalVariables().LIST_EXT.contains(SoundFile::extractExt(AbsFilePath)))
 	{
 		uiForm ->labelOutput ->setText(QWidget::tr("Файл не подходит\nдля воспроизведения!"));
