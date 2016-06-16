@@ -99,9 +99,9 @@ public:
 	    inline void play(QString& AbsFilePath);
 		inline void changeStateButton(QAbstractButton* pButton);
 		
-		inline void addCache();
+		/*inline void addCache();
 		inline bool loadCache();
-		inline bool saveCache();
+		inline bool saveCache();*/
 
 		inline void pressKeyNoModifier(const int codeKey);
 		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
@@ -123,6 +123,10 @@ public:
 		void acceptMessBox();
 
 		void setNewCurrentIndex(quint32 newInd);
+
+		void addCache();
+		bool loadCache();
+		bool saveCache();
 		
     signals:
 		void changedCurrentIndex(quint32 newInd);
