@@ -60,6 +60,7 @@ public:
         font1.setFamily(QString::fromUtf8("Arial"));
         font1.setPointSize(12);
         lineEditInput->setFont(font1);
+        lineEditInput->setDragEnabled(true);
         labelInput = new QLabel(Form);
         labelInput->setObjectName(QString::fromUtf8("labelInput"));
         labelInput->setGeometry(QRect(40, 30, 251, 20));
@@ -118,7 +119,10 @@ public:
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         cacheWord->setFocusPolicy(Qt::WheelFocus);
+        cacheWord->setAcceptDrops(true);
         cacheWord->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+        cacheWord->setDragEnabled(true);
+        cacheWord->setDragDropMode(QAbstractItemView::DragDrop);
         cacheWord->setIconSize(QSize(20, 20));
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);

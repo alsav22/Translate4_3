@@ -40,6 +40,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="dragEnabled">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="labelInput">
    <property name="geometry">
@@ -251,8 +254,17 @@
    <property name="focusPolicy">
     <enum>Qt::WheelFocus</enum>
    </property>
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
    <property name="editTriggers">
     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+   </property>
+   <property name="dragEnabled">
+    <bool>true</bool>
+   </property>
+   <property name="dragDropMode">
+    <enum>QAbstractItemView::DragDrop</enum>
    </property>
    <property name="iconSize">
     <size>
