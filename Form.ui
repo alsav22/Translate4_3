@@ -40,8 +40,11 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
    <property name="dragEnabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="labelInput">
@@ -206,6 +209,12 @@
    <property name="cursor" stdset="0">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="dragEnabled">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -251,20 +260,23 @@
    <property name="cursor" stdset="0">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="focusPolicy">
     <enum>Qt::WheelFocus</enum>
    </property>
    <property name="acceptDrops">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="editTriggers">
     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
    </property>
    <property name="dragEnabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="dragDropMode">
-    <enum>QAbstractItemView::DragDrop</enum>
+    <enum>QAbstractItemView::NoDragDrop</enum>
    </property>
    <property name="iconSize">
     <size>

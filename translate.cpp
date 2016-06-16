@@ -822,7 +822,7 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 {
 	if (uiForm ->cacheWord ->count() != 0) // если кеш не пуст
 	{
-		// стрелка влево
+		// стрелка вправо
 		if (codeKey == Qt::Key_Right) 
 		{
 			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
