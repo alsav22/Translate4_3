@@ -60,7 +60,8 @@ public:
         font1.setFamily(QString::fromUtf8("Arial"));
         font1.setPointSize(12);
         lineEditInput->setFont(font1);
-        lineEditInput->setDragEnabled(true);
+        lineEditInput->setAcceptDrops(false);
+        lineEditInput->setDragEnabled(false);
         labelInput = new QLabel(Form);
         labelInput->setObjectName(QString::fromUtf8("labelInput"));
         labelInput->setGeometry(QRect(40, 30, 251, 20));
@@ -107,6 +108,8 @@ public:
         font3.setPointSize(11);
         listWidgetFiles->setFont(font3);
         listWidgetFiles->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        listWidgetFiles->setAcceptDrops(false);
+        listWidgetFiles->setDragEnabled(false);
         label_3 = new QLabel(Form);
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setGeometry(QRect(40, 220, 171, 19));
@@ -118,11 +121,12 @@ public:
         cacheWord->setGeometry(QRect(480, 260, 421, 151));
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        cacheWord->setMouseTracking(true);
         cacheWord->setFocusPolicy(Qt::WheelFocus);
-        cacheWord->setAcceptDrops(true);
+        cacheWord->setAcceptDrops(false);
         cacheWord->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
-        cacheWord->setDragEnabled(true);
-        cacheWord->setDragDropMode(QAbstractItemView::DragDrop);
+        cacheWord->setDragEnabled(false);
+        cacheWord->setDragDropMode(QAbstractItemView::NoDragDrop);
         cacheWord->setIconSize(QSize(20, 20));
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);
