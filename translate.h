@@ -113,6 +113,7 @@ public:
         void pressedEnter();
         void choiceItemFromList(QListWidgetItem* item);
 		void choiceItemFromCacheWord(QListWidgetItem* item); // выбор слова из кеша
+		void previewToCache(const QString&);
 		void fromClipboardToLineEdit();
 
 		void choiceFileInExplorer();

@@ -56,20 +56,26 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	
 	// при изменении буфера обмена, текст из буфера -> в строку ввода
 	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
+	QObject::connect(uiForm ->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(previewToCache(QString)));
 }
 
 void MyWidget::fromClipboardToLineEdit() // слот
 {
 	if (mpClipboard ->text().size() < 35)
 	{
-		uiForm ->lineEditInput ->setText(mpClipboard ->text());
-		quint32 n = getIndexString(mCurrentListFileName, uiForm ->lineEditInput ->text(), "OneWord");
+		QString word = mpClipboard ->text();
+		uiForm ->lineEditInput ->setText(word);
+		
+		if (containsInCache(word)) // если слово есть в кеше
+			return;
+		
+		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
 			uiForm ->lineEditInput ->setFocus();
 		else
 		{
 			qDebug() << "Index = " << n;
-			quint32 m = uniqueFileName(mCurrentListFileName, uiForm ->lineEditInput ->text());
+			quint32 m = uniqueFileName(mCurrentListFileName, word);
 			if (m == 1) // если слово одно в списке
 				uiForm ->listWidgetFiles ->setCurrentRow(n);
 			else
@@ -594,16 +600,35 @@ bool MyWidget::saveCache()
 	return false;
 }
 
-// если слово есть в кеше
+void MyWidget::previewToCache(const QString& word)
+{
+#ifdef DEBUG
+	qDebug() << "previewToCache";
+#endif
+	
+	if (uiForm ->lineEditInput ->text().isEmpty())
+	{
+		uiForm ->cacheWord ->setCurrentRow(-1);
+		return;
+	}
+	QList <QListWidgetItem*> listitems = (uiForm ->cacheWord ->findItems(word, Qt::MatchStartsWith));
+	if (!listitems.empty())
+		uiForm ->cacheWord ->setCurrentItem(listitems[0]);
+	else
+		uiForm ->cacheWord ->setCurrentRow(-1);
+}
+
+// ѕроверка наличи€ слова в кеше
 bool MyWidget::containsInCache(const QString& word)
 {
 	if (mCacheFiles.contains(word))
 	{
-		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchContains))[0];
+		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchFixedString))[0];
 		choiceItemFromCacheWord(item); // выбор слова из кеша
 		uiForm ->cacheWord ->setCurrentItem(item);
 		return true;
 	}
+
 	return false;
 }
 
@@ -615,7 +640,8 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
 	
 	showFilesFound();
-	setNewCurrentIndex(0);
+	setNewCurrentIndex(0); // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
+		                   //                           uiForm ->labelOutput   ->setText(mCurrentWord);
 	mpClipboard ->setText(mCurrentWord);
 	
 	play(mCurrentAbsFilePath);
