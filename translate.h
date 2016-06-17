@@ -56,13 +56,13 @@ public:
 		MyWidget(QWidget *parent = 0);
 	    bool operator()(const QStringList& );
 		
-        inline int    checkWord(const QString& word);
-		inline bool   findFiles(QString& word);
-		inline bool   extractFiles(const QStringList& listFiles);
-		inline bool   containsFileName(const QStringList& strListFiles, const QString& word);
-		inline bool   containsWordGroup(const QStringList& strListFiles, const QString& word);
-		inline void   showFilesFound();
-		inline void   saveFile(QString& fileName, QString& fileNewName);
+        inline int     checkWord(const QString& word);
+		inline bool    findFiles(QString& word);
+		inline bool    extractFiles(const QStringList& listFiles);
+		inline bool    containsFileName(const QStringList& strListFiles, const QString& word);
+		inline bool    containsWordGroup(const QStringList& strListFiles, const QString& word);
+		inline void    showFilesFound();
+		inline void    saveFile(QString& fileName, QString& fileNewName);
 		inline qint32  getIndexString(const QStringList& strList, const QString& word, const QString mod);
 		inline quint32 uniqueFileName(const QStringList& strListFiles, const QString& word); // количство файлов с таким словом в списке
 		// индекс наименьшего элемента в списке

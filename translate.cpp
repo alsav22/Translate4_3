@@ -562,6 +562,9 @@ void MyWidget::addCache()
 		//uiForm ->cacheWord ->clear();
 	    //uiForm ->cacheWord ->addItems(mStrListCacheWord);
 		uiForm ->cacheWord ->addItem(mCurrentWord);
+	    // устанавливается текущим
+		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(mCurrentWord, Qt::MatchContains))[0];
+		uiForm ->cacheWord ->setCurrentItem(item);
 	}
 }
 
@@ -596,7 +599,7 @@ bool MyWidget::containsInCache(const QString& word)
 {
 	if (mCacheFiles.contains(word))
 	{
-		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchCaseSensitive))[0];
+		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchContains))[0];
 		choiceItemFromCacheWord(item); // выбор слова из кеша
 		uiForm ->cacheWord ->setCurrentItem(item);
 		return true;
@@ -770,7 +773,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			#endif
 			break;
 		}
-		
+		uiForm ->cacheWord ->setCurrentRow(-1);
 		if (findFiles(word)) // если файлы существуют
 		{
 			showFilesFound(); // вывод в список имён найденных файлов
