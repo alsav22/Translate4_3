@@ -99,10 +99,8 @@ public:
 	    inline void play(QString& AbsFilePath);
 		inline void changeStateButton(QAbstractButton* pButton);
 		
-		/*inline void addCache();
-		inline bool loadCache();
-		inline bool saveCache();*/
-
+		inline bool containsInCache(const QString& word); // если слово есть в кеше
+		
 		inline void pressKeyNoModifier(const int codeKey);
 		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
 	    

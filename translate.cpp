@@ -591,6 +591,19 @@ bool MyWidget::saveCache()
 	return false;
 }
 
+// если слово есть в кеше
+bool MyWidget::containsInCache(const QString& word)
+{
+	if (mCacheFiles.contains(word))
+	{
+		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchCaseSensitive))[0];
+		choiceItemFromCacheWord(item); // выбор слова из кеша
+		uiForm ->cacheWord ->setCurrentItem(item);
+		return true;
+	}
+	return false;
+}
+
 void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
 {
 	mCurrentListFileName.clear();
@@ -748,6 +761,16 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 #endif
 		
 	    // поиск звуковых файлов по слову
+		
+        // если слово есть в кеше и не нужно искать словосочетания
+        if (containsInCache(word) && !uiForm ->checkBox ->isChecked()) 
+		{
+			#ifdef DEBUG	
+			qDebug() <<  QWidget::tr("Слово есть в кеше!");
+			#endif
+			break;
+		}
+		
 		if (findFiles(word)) // если файлы существуют
 		{
 			showFilesFound(); // вывод в список имён найденных файлов
