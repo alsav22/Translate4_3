@@ -63,7 +63,7 @@ void MyWidget::fromClipboardToLineEdit() // слот
 {
 	if (mpClipboard ->text().size() < 35)
 	{
-		QString word = mpClipboard ->text();
+		QString word = (mpClipboard ->text()).trimmed().toLower();
 		uiForm ->lineEditInput ->setText(word);
 		
 		if (containsInCache(word)) // если слово есть в кеше
@@ -611,7 +611,7 @@ void MyWidget::previewToCache(const QString& word)
 		uiForm ->cacheWord ->setCurrentRow(-1);
 		return;
 	}
-	QList <QListWidgetItem*> listitems = (uiForm ->cacheWord ->findItems(word, Qt::MatchStartsWith));
+	QList <QListWidgetItem*> listitems = (uiForm ->cacheWord ->findItems(word.trimmed().toLower(), Qt::MatchStartsWith));
 	if (!listitems.empty())
 		uiForm ->cacheWord ->setCurrentItem(listitems[0]);
 	else
