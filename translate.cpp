@@ -65,8 +65,9 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	{
 		QString word = (mpClipboard ->text()).trimmed().toLower();
 		uiForm ->lineEditInput ->setText(word);
+		uiForm ->lineEditInput ->setModified(true);
 		
-		if (containsInCache(word)) // если слово есть в кеше
+		//if (containsInCache(word)) // если слово есть в кеше
 			return;
 		
 		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
@@ -619,6 +620,14 @@ void MyWidget::previewToCache(const QString& word)
 }
 
 // Проверка наличия слова в кеше
+QListWidgetItem* MyWidget::getItemFromCache(const QString& word)
+{
+	if (uiForm ->cacheWord ->count() != 0 && mCacheFiles.contains(word))
+		return (uiForm ->cacheWord ->findItems(word, Qt::MatchFixedString))[0];
+	return nullptr;
+}
+
+// Проверка наличия слова в кеше
 bool MyWidget::containsInCache(const QString& word)
 {
 	if (mCacheFiles.contains(word))
@@ -644,6 +653,7 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 		                   //                           uiForm ->labelOutput   ->setText(mCurrentWord);
 	mpClipboard ->setText(mCurrentWord);
 	
+	uiForm ->cacheWord ->setCurrentItem(item);
 	play(mCurrentAbsFilePath);
 }
 
@@ -792,14 +802,21 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 	    // поиск звуковых файлов по слову
 		
         // если слово есть в кеше и не нужно искать словосочетания
-        if (containsInCache(word) && !uiForm ->checkBox ->isChecked()) 
+        if (!uiForm ->checkBox ->isChecked()) 
 		{
-			#ifdef DEBUG	
-			qDebug() <<  QWidget::tr("Слово есть в кеше!");
-			#endif
-			break;
+			QListWidgetItem* item = getItemFromCache(word);
+			if (item)
+			{
+				#ifdef DEBUG	
+				qDebug() <<  QWidget::tr("Слово есть в кеше!");
+				#endif
+				break;
+			
+				choiceItemFromCacheWord(item); // выбор слова из кеша
+			}
 		}
 		uiForm ->cacheWord ->setCurrentRow(-1);
+		
 		if (findFiles(word)) // если файлы существуют
 		{
 			showFilesFound(); // вывод в список имён найденных файлов

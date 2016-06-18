@@ -100,6 +100,7 @@ public:
 		inline void changeStateButton(QAbstractButton* pButton);
 		
 		inline bool containsInCache(const QString& word); // если слово есть в кеше
+		inline QListWidgetItem* getItemFromCache(const QString& word); 
 		
 		inline void pressKeyNoModifier(const int codeKey);
 		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
