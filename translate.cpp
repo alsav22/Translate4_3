@@ -668,6 +668,7 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 		mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
 		mCurrentListAbsFilePath.clear();
 		mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
+		//uiForm ->checkBox ->setChecked(false);
 		showFilesFound();
 		
 	}
@@ -917,8 +918,12 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		// стрелка вправо
 		if (codeKey == Qt::Key_Right) 
 		{
+	        // сначала установить текущий элемент, потом перевести фокус (не наоборот), 
+			// тогда текущий элемент будет всегда виден
+			if (uiForm ->cacheWord ->currentRow() == -1)
+				uiForm ->cacheWord ->setCurrentItem(uiForm ->cacheWord ->item(0));
 			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-			uiForm ->cacheWord ->currentItem() ->setSelected(true);
+			
 			return;
 		}
 		// стрелка вверх, и первый элемент в кеше в фокусе
@@ -952,8 +957,9 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		switch (codeKey)
 		{
 			case Qt::Key_Left : // стрелка влево
+				//uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
+				uiForm ->listWidgetFiles ->setCurrentItem(uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->currentRow()));
 				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
-				uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
 			break;
 		
 			case Qt::Key_Down : // стрелка вниз и
