@@ -662,14 +662,17 @@ bool MyWidget::containsInCache(const QString& word)
 
 void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
 {
-	mCurrentListFileName.clear();
-	mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
-	mCurrentListAbsFilePath.clear();
-	mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
-	
-	showFilesFound();
-	setNewCurrentIndex(0); // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
-		                   //                           uiForm ->labelOutput   ->setText(mCurrentWord);
+	if (!mCurrentListAbsFilePath.contains(mCacheFiles.value(item ->text())))
+	{
+		mCurrentListFileName.clear();
+		mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
+		mCurrentListAbsFilePath.clear();
+		mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
+		showFilesFound();
+		
+	}
+	setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
+		                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
 	mpClipboard ->setText(mCurrentWord);
 	
 	uiForm ->cacheWord ->setCurrentItem(item);
