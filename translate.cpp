@@ -676,6 +676,7 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	mpClipboard ->setText(mCurrentWord);
 	
 	uiForm ->cacheWord ->setCurrentItem(item);
+	
 	play(mCurrentAbsFilePath);
 }
 
