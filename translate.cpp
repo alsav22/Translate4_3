@@ -63,6 +63,9 @@ void MyWidget::fromClipboardToLineEdit() // слот
 {
 	if (mpClipboard ->text().size() < 35)
 	{
+	qDebug() << mpClipboard ->text();
+	qDebug() << uiForm ->lineEditInput ->text();
+		
 		QString word = (mpClipboard ->text()).trimmed().toLower();
 		uiForm ->lineEditInput ->setText(word);
 		//uiForm ->lineEditInput ->setModified(true);
@@ -616,13 +619,23 @@ void MyWidget::previewToCache(const QString& word)
 	if (uiForm ->lineEditInput ->text().isEmpty())
 	{
 		uiForm ->cacheWord ->setCurrentRow(-1);
+		qDebug() << "return from previewToCache (isEmpty())";
 		return;
 	}
+	else if (uiForm ->cacheWord ->currentRow() != -1 && (word.trimmed().toLower() == uiForm ->cacheWord ->currentItem() ->text()))
+	{
+		qDebug() << "return from previewToCache";
+		return;
+	}
+
 	QList <QListWidgetItem*> listitems = (uiForm ->cacheWord ->findItems(word.trimmed().toLower(), Qt::MatchStartsWith));
 	if (!listitems.empty())
 		uiForm ->cacheWord ->setCurrentItem(listitems[0]);
 	else
+	{
 		uiForm ->cacheWord ->setCurrentRow(-1);
+		qDebug() << "Not faund to cache (from previewToCache)";
+	}
 }
 
 // Проверка наличия слова в кеше
