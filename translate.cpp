@@ -65,10 +65,16 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	{
 		QString word = (mpClipboard ->text()).trimmed().toLower();
 		uiForm ->lineEditInput ->setText(word);
-		uiForm ->lineEditInput ->setModified(true);
+		//uiForm ->lineEditInput ->setModified(true);
 		
 		//if (containsInCache(word)) // если слово есть в кеше
+		    //return;
+		QListWidgetItem* item = getItemFromCache(word);
+		if (item)
+		{
+			choiceItemFromCacheWord(item); // выбор слова из кеша
 			return;
+		}
 		
 		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
