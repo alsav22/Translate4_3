@@ -810,9 +810,9 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 				#ifdef DEBUG	
 				qDebug() <<  QWidget::tr("Слово есть в кеше!");
 				#endif
-				break;
-			
+				
 				choiceItemFromCacheWord(item); // выбор слова из кеша
+				break;
 			}
 		}
 		uiForm ->cacheWord ->setCurrentRow(-1);
