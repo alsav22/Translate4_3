@@ -559,10 +559,11 @@ qDebug() << QWidget::tr("Изменился!");
 	else
 		qDebug() << QWidget::tr("Не изменился!");
 #endif
-	
+	play(mCurrentAbsFilePath); // воспроизведение текущего файла
 	uiForm ->labelOutput ->setText(mCurrentWord);
 	uiForm ->lineEditInput ->setText(mCurrentWord);
-	play(mCurrentAbsFilePath); // воспроизведение текущего файла
+	
+	previewToCache(mCurrentWord); // просмотр кеша
 }
 
 void MyWidget::addCache()
@@ -630,7 +631,10 @@ void MyWidget::previewToCache(const QString& word)
 
 	QList <QListWidgetItem*> listitems = (uiForm ->cacheWord ->findItems(word.trimmed().toLower(), Qt::MatchStartsWith));
 	if (!listitems.empty())
+	{
 		uiForm ->cacheWord ->setCurrentItem(listitems[0]);
+		uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
+	}
 	else
 	{
 		uiForm ->cacheWord ->setCurrentRow(-1);
@@ -654,6 +658,7 @@ bool MyWidget::containsInCache(const QString& word)
 		QListWidgetItem* item = (uiForm ->cacheWord ->findItems(word, Qt::MatchFixedString))[0];
 		choiceItemFromCacheWord(item); // выбор слова из кеша
 		uiForm ->cacheWord ->setCurrentItem(item);
+		uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
 		return true;
 	}
 
@@ -674,11 +679,12 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	}
 	setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
 		                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
+	play(mCurrentAbsFilePath);
+	
 	mpClipboard ->setText(mCurrentWord);
 	
 	uiForm ->cacheWord ->setCurrentItem(item);
-	
-	play(mCurrentAbsFilePath);
+	uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
 }
 
 // Воспроизведение файла
@@ -694,7 +700,7 @@ void MyWidget::play(QString& AbsFilePath)
 	mMyPlayer.play(AbsFilePath); // воспроизведение файла
 }
 
-// Установка нового текущего индекса в списках
+// Установка нового текущего индекса в списках и вывод текущего слова
 void MyWidget::setNewCurrentIndex(quint32 newInd)
 {
 	mCurrentIndex = newInd;
@@ -824,22 +830,20 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 #endif
 		
 	    // поиск звуковых файлов по слову
-		
+		QListWidgetItem* item = getItemFromCache(word); // если слово есть в кеше, то указатель на элемент кеша
         // если слово есть в кеше и не нужно искать словосочетания
-        if (!uiForm ->checkBox ->isChecked()) 
+        if (!uiForm ->checkBox ->isChecked() && item) 
 		{
-			QListWidgetItem* item = getItemFromCache(word);
-			if (item)
-			{
-				#ifdef DEBUG	
-				qDebug() <<  QWidget::tr("Слово есть в кеше!");
-				#endif
-				
-				choiceItemFromCacheWord(item); // выбор слова из кеша
-				break;
-			}
+			#ifdef DEBUG	
+			qDebug() <<  QWidget::tr("Слово есть в кеше!");
+			#endif
+			choiceItemFromCacheWord(item); // выбор слова из кеша
+			break;
 		}
-		uiForm ->cacheWord ->setCurrentRow(-1);
+		else if (item)
+				previewToCache(word);
+			else
+				uiForm ->cacheWord ->setCurrentRow(-1);
 		
 		if (findFiles(word)) // если файлы существуют
 		{
@@ -847,12 +851,10 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			// новый текущий индекс (в списке - это индекс самого короткого имени файла (основное слово))
 			setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
 			
-			uiForm ->labelOutput ->setText(mCurrentWord);
-			
-			//mpClipboard ->setText(mCurrentWord);
-			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
+			//uiForm ->labelOutput ->setText(mCurrentWord);
+			//mpClipboard ->setText(mCurrentWord);
 			addCache(); // добавление слова и файла в кеш
 		}
 		else // если файлов, с таким словом, нет
@@ -918,12 +920,10 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		// стрелка вправо
 		if (codeKey == Qt::Key_Right) 
 		{
-	        // сначала установить текущий элемент, потом перевести фокус (не наоборот), 
-			// тогда текущий элемент будет всегда виден
-			if (uiForm ->cacheWord ->currentRow() == -1)
-				uiForm ->cacheWord ->setCurrentItem(uiForm ->cacheWord ->item(0));
+	       if (uiForm ->cacheWord ->currentRow() == -1)
+			   uiForm ->cacheWord ->setCurrentItem(uiForm ->cacheWord ->item(0));
+			uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
 			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-			
 			return;
 		}
 		// стрелка вверх, и первый элемент в кеше в фокусе
@@ -935,8 +935,9 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		// стрелка вниз, когда фокус в строке ввода, и список файлов пуст
 		if (codeKey == Qt::Key_Down && uiForm ->lineEditInput ->hasFocus() && uiForm ->listWidgetFiles ->count() == 0)
 		{
+			if (uiForm ->cacheWord ->currentRow() == -1)
+			   uiForm ->cacheWord ->setCurrentItem(uiForm ->cacheWord ->item(0));
 			uiForm ->cacheWord ->setFocus(); // переход фокуса в кеш
-			uiForm ->cacheWord ->currentItem() ->setSelected(true);
 			return;
 		}
 	
@@ -957,16 +958,19 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 		switch (codeKey)
 		{
 			case Qt::Key_Left : // стрелка влево
-				//uiForm ->listWidgetFiles ->currentItem() ->setSelected(true);
-				uiForm ->listWidgetFiles ->setCurrentItem(uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->currentRow()));
+				
+				if (uiForm ->cacheWord ->currentRow() == -1)
+					uiForm ->cacheWord ->setCurrentItem(uiForm ->cacheWord ->item(0));
+				uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
 				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 			break;
 		
 			case Qt::Key_Down : // стрелка вниз и
 			if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
 			{
-				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 				uiForm ->listWidgetFiles ->setCurrentRow(0);
+				uiForm ->listWidgetFiles ->scrollToItem(uiForm ->cacheWord ->currentItem());
+				uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 			}
 			// последняя строка, в листе файлов, в фокусе 
 			else if (uiForm ->listWidgetFiles ->item(uiForm ->listWidgetFiles ->count() - 1) ->isSelected())
@@ -978,8 +982,9 @@ void MyWidget::pressKeyNoModifier(const int codeKey)
 					uiForm ->lineEditInput ->setFocus(); // переход фокуса в строку ввода
 				else if (uiForm ->lineEditInput ->hasFocus()) // строка ввода в фокусе
 				{
-					uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 					uiForm ->listWidgetFiles ->setCurrentRow(uiForm ->listWidgetFiles ->count() - 1);
+					uiForm ->listWidgetFiles ->scrollToItem(uiForm ->cacheWord ->currentItem());
+					uiForm ->listWidgetFiles ->setFocus(); // переход фокуса в лист файлов
 				}
 			break;
 		}
