@@ -12,7 +12,7 @@ private:
 	bool create();
 	bool load();
 	bool save();
-	void show(const char* key, QHash <QString, QString>* dict);
+	void show(const char* key);
 
 	const QString mfile;
 	const QString mhash;

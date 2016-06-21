@@ -15,7 +15,7 @@ Dictionary::Dictionary(const QString fileName, const QString hashName) : mfile(f
 bool Dictionary::create()
 {
 	QFile file(mfile);
-	if (!file.open(QIODevice::ReadOnly))
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		qDebug() << "Error1!";
 		system("pause");
@@ -34,7 +34,7 @@ bool Dictionary::create()
 			ru = in.readLine();
 		if (!in.atEnd())
 		{
-			this ->insert(en, ru);
+			insert(en, ru);
 		}
 		else
 			break;
@@ -71,7 +71,7 @@ bool Dictionary::load()
 	in >> *this;
 	file.close();
 	
-	show("zero", this);
+	show("zero");
 	return true;
 }
 
@@ -80,9 +80,9 @@ bool Dictionary::save()
 	return true;
 }
 
-void Dictionary::show(const char* key, QHash <QString, QString>* dict)
+void Dictionary::show(const char* key)
 {
-	QString str = dict ->value(key);
+	QString str = value(key);
 	str = str.trimmed();
 	
 	qDebug() << key << ": ";
