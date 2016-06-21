@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QKeyEvent>
 #include "MyPlayer.h"
+#include "Dictionary.h"
 //#include "Storage.h"
 //#include "Data.h"
 #include "ui_Form.h"
@@ -48,9 +49,11 @@ private:
 		QClipboard*        mpClipboard;
 
 		QStringList mStrListFiles; // список файлов из папки
-		//QStringList mStrListCacheWord; // список кеша слов, для которых были найдены звуковые файлы
-		QHash <QString, QString> mCacheFiles; // контейнер для найденных звуковых файлов
 		quint32 mNumber; // количество файлов в папке
+		
+		QHash <QString, QString> mCacheFiles; // контейнер для найденных звуковых файлов
+		Dictionary mDict; // хеш словаря
+		
 		
 public:	
 		MyWidget(QWidget *parent = 0);

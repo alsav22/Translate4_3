@@ -35,7 +35,8 @@
 
 MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
                                       mpMessageBox(nullptr), mpCurrentSoundFile(nullptr),
-									  mCurrentDir(""), mCurrentWord(""), mStrListFiles(""), mNumber(0)
+									  mCurrentDir(""), mCurrentWord(""), mStrListFiles(""), mNumber(0),
+									  mDict("Mueller7accentGPL.1251.txt", "Hash_Dict")
 {
 	uiForm ->setupUi(this);
 	setWindowTitle(QWidget::tr("Произношение-4"));

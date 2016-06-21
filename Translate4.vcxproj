@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_Data.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -110,6 +111,7 @@
     <ClCompile Include="translate.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <CustomBuild Include="Data.h">
