@@ -712,7 +712,8 @@ void MyWidget::setNewCurrentIndex(quint32 newInd)
 		uiForm ->listWidgetFiles ->setCurrentRow(mCurrentIndex);
 		mCurrentWord = SoundFile::extractWordGroup(mCurrentFileName);
 		uiForm ->lineEditInput ->setText(mCurrentWord);
-		uiForm ->labelOutput ->setText(mCurrentWord);
+		//uiForm ->labelOutput ->setText(mCurrentWord);
+		uiForm ->labelOutput ->setText(mDict.show(mCurrentWord));
 	}
 }
 		

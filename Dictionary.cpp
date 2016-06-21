@@ -80,12 +80,13 @@ bool Dictionary::save()
 	return true;
 }
 
-void Dictionary::show(const char* key)
+QString Dictionary::show(const QString& key)
 {
 	QString str = value(key);
 	str = str.trimmed();
-	
-	qDebug() << key << ": ";
+	QString output;
+	output.append(str + ": " + "\r\n");
+	//qDebug() << key << ": ";
 	int ind_beg = 0;
 	int ind_end = 0;
 	while (true)
@@ -93,14 +94,17 @@ void Dictionary::show(const char* key)
 		ind_end = str.indexOf(';', ind_beg);
 		if (ind_end != -1)
 		{
-			qDebug() << "      " << str.mid(ind_beg, ind_end - ind_beg) << ";";
+			//qDebug() << "      " << str.mid(ind_beg, ind_end - ind_beg) << ";";
+			output.append(str.mid(ind_beg, ind_end - ind_beg) + ";\r\n");
 		}
 		else
 		{
-			qDebug() << "      " << str.mid(ind_beg, str.size() - ind_beg);
+			//qDebug() << "      " << str.mid(ind_beg, str.size() - ind_beg);
+			output.append(str.mid(ind_beg, str.size() - ind_beg) + "\r\n");
 			break;
 		}
 		ind_beg = ind_end + 1;
 	}
+	return output;
 }
 

@@ -7,14 +7,14 @@ class Dictionary : QHash <QString, QString>
 {
 public:
 	Dictionary(const QString fileName, const QString hashName);
-
+	QString show(const QString& key);
 private:
+	
 	bool create();
 	bool load();
 	bool save();
-	void show(const char* key);
-
-	const QString mfile;
+	
+    const QString mfile;
 	const QString mhash;
 };
 #endif
