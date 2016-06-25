@@ -11,7 +11,6 @@ Dictionary::Dictionary(const QString fileName, const QString hashName) : mfile(f
 	load();
 }
 
-
 bool Dictionary::create()
 {
 	QFile file(mfile);
@@ -56,6 +55,52 @@ bool Dictionary::create()
 	
 	return true;
 }
+
+
+//bool Dictionary::create()
+//{
+//	QFile file(mfile);
+//	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+//	{
+//		qDebug() << "Error1!";
+//		system("pause");
+//		return false;
+//	}
+//	
+//	QTextStream in(&file);
+//	QString en;
+//	QString ru;
+//	QString temp;
+//		
+//	while (true)
+//	{
+//		in >> en;
+//		if (!en.isEmpty() && en[0] != '_' && en [0] != '-' && en[0] != '\'')
+//			ru = in.readLine();
+//		if (!in.atEnd())
+//		{
+//			insert(en, ru);
+//		}
+//		else
+//			break;
+//	}
+//	
+//	file.close();
+//
+//	QFile file_out(mhash);
+//	if (!file_out.open(QIODevice::WriteOnly))
+//	{
+//		qDebug() << "Error2!";
+//		system("pause");
+//		return false;
+//	}
+//	
+//	QDataStream out(&file_out);
+//	out << *this;
+//	file_out.close();
+//	
+//	return true;
+//}
 
 bool Dictionary::load()
 {

@@ -5,6 +5,7 @@
 
 class Dictionary : QHash <QString, QString>
 {
+	
 public:
 	Dictionary(const QString fileName, const QString hashName);
 	QString show(const QString& key);
