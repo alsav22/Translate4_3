@@ -28,6 +28,8 @@ public:
 	{ GlobalVariables::getGlobalVariables(); } // создание и инициализация глобальных переменных
 	
 	bool download();   // загрузка данных из файла
+	bool saveHash();   // запись хеша
+	bool loadHash();   // загрузка хеша
 	bool processing(); // обработка загруженных данных
 	
 	void errorOpeningFile();

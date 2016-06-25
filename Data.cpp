@@ -15,7 +15,10 @@ bool start()
 		QSplashScreen splash(QPixmap("5.png"));
 		splash.show();
 		
-		if (data.processing())
+		if (data.loadHash())
+			return true;
+		
+		if (data.processing() && data.saveHash())
 		{
 #ifdef DEBUG
 clock_t t2 = clock();
@@ -61,6 +64,30 @@ bool Data::download()
 	}
 }
 
+bool Data::saveHash()
+{
+	QFile fileHash("Hash.dat");
+	if (!fileHash.open(QIODevice::WriteOnly))
+		return false;
+	QDataStream streamSave(&fileHash);
+	streamSave << GlobalVariables::getGlobalVariables().ListsFilesFromDirs;
+
+	return true;
+}
+
+bool Data::loadHash()
+{
+	if (!QFile::exists("Hash.dat"))
+		return false;
+
+	QFile fileHash("Hash.dat");
+	if (!fileHash.open(QIODevice::ReadOnly))
+		return false;
+	QDataStream streamLoad(&fileHash);
+	streamLoad >> GlobalVariables::getGlobalVariables().ListsFilesFromDirs;
+
+	return true;
+}
 
 //void input(QStringList& dirs)
 //{
