@@ -1,4 +1,4 @@
-Папку BrE поместить в удобное место, и прописать путь к ней в текстовом файле Path.txt. например, так для Windows: G:/Sound/StarDict_En-En/BrE
+Папку BrE поместить в удобное место, и прописать путь к ней в текстовом файле Path_Sound.txt. например, так для Windows: G:/Sound/StarDict_En-En/BrE
 
 или так для Linux:
 /home/alex/BrE

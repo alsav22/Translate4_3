@@ -1030,8 +1030,12 @@ void MyWidget::keyPressEvent(QKeyEvent* pe)
 	QWidget::keyPressEvent(pe);
 }
 
-// Добавление файлов
+
 ////////////////////////////////////////////////////////////////////////////
+// Добавление файлов
+// Определиться с mDirSound (пока файл добавляется в рабочий каталог), 
+// и сделать добавление нового файла в хеш (с перезаписью файла хеша)
+
 
 void MyWidget::reject()
 {
@@ -1058,6 +1062,7 @@ void MyWidget::acceptMessBox()
 
 void MyWidget::saveFile(QString& fileName, QString& fileNewName)
 {
+	//qDebug() << mDirSound.dirName();
 	if (QFile::copy(fileName, mDirSound.filePath(fileNewName)))
     {
         fileNewName.truncate(fileNewName.lastIndexOf('.'));
