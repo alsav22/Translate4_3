@@ -74,10 +74,12 @@ void MyWidget::fromClipboardToLineEdit() // слот
 		QListWidgetItem* item = getItemFromCache(word);
 		if (item) // если слово есть в кеше
 		{
-			//uiForm ->cacheWord ->setFocus();
-			f(item);
+			uiForm ->cacheWord ->setFocus();
+			setCurrentDataForItemCache(item);
 			return;
 		}
+		//else
+			//uiForm ->lineEditInput ->setFocus();
 
 		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
@@ -665,10 +667,10 @@ bool MyWidget::containsInCache(const QString& word)
 	return false;
 }
 
-// обработка элемента в кеше
-void MyWidget::f(QListWidgetItem* item)
+// Установка текущих данных для выбранного элемента в кеше
+void MyWidget::setCurrentDataForItemCache(QListWidgetItem* item)
 {
-	// если в текущем листе путей к файлам нет файла для слова из этого элемента
+	// если в текущих данных нет слова из этого элемента
 	if (!mCurrentListAbsFilePath.contains(mCacheFiles.value(item ->text())))
 	{
 		mCurrentListFileName.clear();
@@ -690,25 +692,9 @@ void MyWidget::f(QListWidgetItem* item)
 
 void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
 {
-	f(item);
-	//if (!mCurrentListAbsFilePath.contains(mCacheFiles.value(item ->text())))
-	//{
-	//	mCurrentListFileName.clear();
-	//	mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
-	//	mCurrentListAbsFilePath.clear();
-	//	mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
-	//	//uiForm ->checkBox ->setChecked(false);
-	//	showFilesFound();
-	//	
-	//}
-	//setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
-	//	                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
+	setCurrentDataForItemCache(item);
+	                                                          
 	play(mCurrentAbsFilePath);
-	
-	/*mpClipboard ->setText(mCurrentWord);
-	
-	uiForm ->cacheWord ->setCurrentItem(item);
-	uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());*/
 }
 
 // Воспроизведение файла
