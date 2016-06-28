@@ -104,6 +104,8 @@ public:
 		
 		inline void pressKeyNoModifier(const int codeKey);
 		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
+
+		inline void f(QListWidgetItem* item);
 	    
 		~MyWidget()
 		{

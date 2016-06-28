@@ -68,17 +68,17 @@ void MyWidget::fromClipboardToLineEdit() // слот
 		
 		QString word = (mpClipboard ->text()).trimmed().toLower();
 		uiForm ->lineEditInput ->setText(word);
-		//uiForm ->lineEditInput ->setModified(true);
 		
-		//if (containsInCache(word)) // если слово есть в кеше
-		    //return;
+		previewToCache(word); // просмотр кеша
+		
 		QListWidgetItem* item = getItemFromCache(word);
-		if (item)
+		if (item) // если слово есть в кеше
 		{
-			choiceItemFromCacheWord(item); // выбор слова из кеша
+			//uiForm ->cacheWord ->setFocus();
+			f(item);
 			return;
 		}
-		
+
 		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
 			uiForm ->lineEditInput ->setFocus();
@@ -665,8 +665,10 @@ bool MyWidget::containsInCache(const QString& word)
 	return false;
 }
 
-void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
+// обработка элемента в кеше
+void MyWidget::f(QListWidgetItem* item)
 {
+	// если в текущем листе путей к файлам нет файла для слова из этого элемента
 	if (!mCurrentListAbsFilePath.contains(mCacheFiles.value(item ->text())))
 	{
 		mCurrentListFileName.clear();
@@ -675,16 +677,38 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 		mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
 		//uiForm ->checkBox ->setChecked(false);
 		showFilesFound();
-		
 	}
+	// установка нового текущего индекса
 	setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
 		                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
-	play(mCurrentAbsFilePath);
-	
 	mpClipboard ->setText(mCurrentWord);
 	
 	uiForm ->cacheWord ->setCurrentItem(item);
 	uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());
+	//uiForm ->cacheWord ->setFocus();
+}
+
+void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
+{
+	f(item);
+	//if (!mCurrentListAbsFilePath.contains(mCacheFiles.value(item ->text())))
+	//{
+	//	mCurrentListFileName.clear();
+	//	mCurrentListFileName.append(SoundFile::extractName(mCacheFiles.value(item ->text())));
+	//	mCurrentListAbsFilePath.clear();
+	//	mCurrentListAbsFilePath.append(mCacheFiles.value(item ->text()));
+	//	//uiForm ->checkBox ->setChecked(false);
+	//	showFilesFound();
+	//	
+	//}
+	//setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
+	//	                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
+	play(mCurrentAbsFilePath);
+	
+	/*mpClipboard ->setText(mCurrentWord);
+	
+	uiForm ->cacheWord ->setCurrentItem(item);
+	uiForm ->cacheWord ->scrollToItem(uiForm ->cacheWord ->currentItem());*/
 }
 
 // Воспроизведение файла
