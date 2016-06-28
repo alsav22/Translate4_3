@@ -74,7 +74,8 @@ void MyWidget::fromClipboardToLineEdit() // слот
 		QListWidgetItem* item = getItemFromCache(word);
 		if (item) // если слово есть в кеше
 		{
-			uiForm ->cacheWord ->setFocus();
+			//uiForm ->cacheWord ->setFocus();
+			//uiForm ->lineEditInput ->setFocus();
 			setCurrentDataForItemCache(item);
 			return;
 		}
