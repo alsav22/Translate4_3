@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "dictionary.h"
+#include "ui_Form.h"
 
 class DictProgram //: public QWidget
 {
@@ -50,9 +51,8 @@ public:
 		//mvectorPointsToCheckBox.push_back(ui.checkBox_5); // медиц.
 	}
 
-	QString translate(const QString& word)
+	void translate(const QString& word, Ui::Form* ui)
 	{
-		//QString word((ui.lineEdit ->text()).trimmed());
 		QString translation;
 		for (int i = 0; i < mvectorPointsToDicts.size(); ++i)
 		{
@@ -65,17 +65,17 @@ public:
 				}
 			}
 		}
-		return translation;
+		outputTr(translation, ui);
 	}
 
 	// вывод перевода
-	void outputTr(QString& translation)
+	void outputTr(QString& translation, Ui::Form* ui)
 	{
-		/*ui.textEdit ->clear();
+		ui ->labelOutput ->clear();
 		if (!translation.isEmpty())
-			ui.textEdit ->setText(translation);
+			ui ->labelOutput ->setText(translation);
 		else
-			ui.textEdit ->setText(QWidget::tr("Слово не найдено!"));*/
+			ui ->labelOutput ->setText(QWidget::tr("Слово не найдено!"));
 	}
 	
 	~DictProgram()

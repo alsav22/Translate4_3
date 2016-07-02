@@ -850,7 +850,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			#endif
 			choiceItemFromCacheWord(item); // выбор слова из кеша
 			
-			outputTr(dictProgram.translate(word)); // поиск и вывод перевода
+			dictProgram.translate(word, uiForm); // поиск и вывод перевода
 			
 			break;
 		}
@@ -867,7 +867,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
-			outputTr(dictProgram.translate(word)); // поиск и вывод перевода
+			dictProgram.translate(word, uiForm); // поиск и вывод перевода
 			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);
