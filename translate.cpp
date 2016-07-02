@@ -849,6 +849,9 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			qDebug() <<  QWidget::tr("Слово есть в кеше!");
 			#endif
 			choiceItemFromCacheWord(item); // выбор слова из кеша
+			
+			outputTr(dictProgram.translate(word)); // поиск и вывод перевода
+			
 			break;
 		}
 		else if (item)
@@ -864,6 +867,8 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
+			outputTr(dictProgram.translate(word)); // поиск и вывод перевода
+			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);
 			addCache(); // добавление слова и файла в кеш
@@ -877,6 +882,13 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			uiForm ->listWidgetFiles ->clear();
 		}
 	} // switch (checkWord(word))
+}
+
+// вывод перевода
+void MyWidget::outputTr(QString& translation)
+{
+	uiForm ->labelOutput ->clear();
+	uiForm ->labelOutput ->setText(translation);
 }
 
 void MyWidget::changeStateButton(QAbstractButton* pButton)

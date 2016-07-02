@@ -11,9 +11,6 @@ class DictProgram //: public QWidget
 public:
 	DictProgram(/*QWidget *parent = 0, Qt::WFlags flags = 0*/) //: QWidget(parent, flags)
 	{
-		//ui.setupUi(this);
-		//ui.checkBox_0 ->setChecked(true); // общ.
-		
 		initialization();
 	}
 
@@ -26,12 +23,7 @@ public:
 		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Biology-2.4.2"), QString(QWidget::tr("Биологический"))));
 		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Medical-2.4.2"), QString(QWidget::tr("Медицинский"))));
 		
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_0); // общ.
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_1); // разг.
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_2); // комп.
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_3); // политех.
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_4); // биол.
-		//mvectorPointsToCheckBox.push_back(ui.checkBox_5); // медиц.
+		initVectorCheckBox();
 		
 		for (int i = 0; i < mvectorNamesDicts.size(); ++i)
 		{
@@ -40,32 +32,50 @@ public:
 		}
 	}
 
-	void translate()
+	void initVectorCheckBox()
 	{
-		QString word((ui.lineEdit ->text()).trimmed());
+		for (int i = 0; i < mvectorNamesDicts.size(); ++i)
+		{
+			QCheckBox* pCheckBox = new QCheckBox();
+			if (i == 0)
+				pCheckBox ->setChecked(true); // общ.
+			mvectorPointsToCheckBox.push_back(pCheckBox);
+		}
+		
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_0); // общ.
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_1); // разг.
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_2); // комп.
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_3); // политех.
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_4); // биол.
+		//mvectorPointsToCheckBox.push_back(ui.checkBox_5); // медиц.
+	}
+
+	QString translate(const QString& word)
+	{
+		//QString word((ui.lineEdit ->text()).trimmed());
 		QString translation;
 		for (int i = 0; i < mvectorPointsToDicts.size(); ++i)
 		{
 			if (mvectorPointsToCheckBox[i] ->checkState() == Qt::Checked) // если словарь выбран
 			{
-					QString temp = mvectorPointsToDicts[i] ->getTr(word); // получение перевода от этого словаря
-					if (!temp.isEmpty())
-					{
+				QString temp = mvectorPointsToDicts[i] ->getTr(word); // получение перевода от этого словаря
+				if (!temp.isEmpty())
+				{
 					translation.append(temp); // суммирование переводов от разных словарей
-					}
+				}
 			}
 		}
-		outputTr(translation);
+		return translation;
 	}
 
 	// вывод перевода
 	void outputTr(QString& translation)
 	{
-		ui.textEdit ->clear();
+		/*ui.textEdit ->clear();
 		if (!translation.isEmpty())
 			ui.textEdit ->setText(translation);
 		else
-			ui.textEdit ->setText(QWidget::tr("Слово не найдено!"));
+			ui.textEdit ->setText(QWidget::tr("Слово не найдено!"));*/
 	}
 	
 	~DictProgram()
@@ -73,6 +83,10 @@ public:
 		for (int i = 0; i < mvectorPointsToDicts.size(); ++i)
 		{
 			delete mvectorPointsToDicts[i];
+		}
+		for (int i = 0; i < mvectorPointsToCheckBox.size(); ++i)
+		{
+			delete mvectorPointsToCheckBox[i];
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QKeyEvent>
 #include "MyPlayer.h"
+#include "DictProgram.h"
 //#include "Storage.h"
 //#include "Data.h"
 #include "ui_Form.h"
@@ -51,6 +52,8 @@ private:
 		//QStringList mStrListCacheWord; // список кеша слов, для которых были найдены звуковые файлы
 		QHash <QString, QString> mCacheFiles; // контейнер для найденных звуковых файлов
 		quint32 mNumber; // количество файлов в папке
+
+		DictProgram dictProgram; // объект для переводов
 		
 public:	
 		MyWidget(QWidget *parent = 0);
@@ -106,6 +109,8 @@ public:
 		inline void pressKeyYesModifier(const Qt::KeyboardModifiers&, const int codeKey);
 
 		inline void setCurrentDataForItemCache(QListWidgetItem* item);
+
+		inline void outputTr(QString& translation); // вывод перевода
 	    
 		~MyWidget()
 		{
