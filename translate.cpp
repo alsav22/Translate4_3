@@ -851,7 +851,6 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
 			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
-			mCurrentTranslate.clear();
 			
 			break;
 		}
@@ -870,7 +869,6 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
 			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
-			mCurrentTranslate.clear();
 			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);

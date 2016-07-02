@@ -98,6 +98,7 @@ public:
 	// получение первода (из нескольких словарей) слова word в строку translation
 	void translate(const QString& word, QString& translation)
 	{
+		translation.clear();
 		for (int i = 0; i < mvectorPointsToDicts.size(); ++i)
 		{
 			if (mvectorPointsToCheckBox[i] ->checkState() == Qt::Checked) // если словарь выбран
