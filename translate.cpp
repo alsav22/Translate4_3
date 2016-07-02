@@ -34,8 +34,7 @@
 #endif
 
 MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
-                                      mpMessageBox(nullptr), mpCurrentSoundFile(nullptr),
-									  mCurrentDir(""), mCurrentWord(""), mStrListFiles(""), mNumber(0)
+                                      mpMessageBox(nullptr), mpCurrentSoundFile(nullptr), mNumber(0)
 {
 	uiForm ->setupUi(this);
 	setWindowTitle(QWidget::tr("Произношение-4"));
@@ -850,7 +849,9 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			#endif
 			choiceItemFromCacheWord(item); // выбор слова из кеша
 			
-			dictProgram.translate(word, uiForm); // поиск и вывод перевода
+			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
+			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
+			mCurrentTranslate.clear();
 			
 			break;
 		}
@@ -867,7 +868,9 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
-			dictProgram.translate(word, uiForm); // поиск и вывод перевода
+			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
+			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
+			mCurrentTranslate.clear();
 			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);

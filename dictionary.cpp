@@ -6,16 +6,15 @@
 #include <sstream>
 #include <fstream>
 
-Dictionary::Dictionary(const QString& dirName, const QString name)
-	: dirDict(dirName), mName(name), ifoWordcount("wordcount"), ifoIdxfilesize("idxfilesize"),
-	  wordcount(0), idxfilesize(0), offset(0), size(0), mpFileDict(nullptr)
+Dictionary::Dictionary(const QString& dirName, const QString name) : dirDict(dirName), mName(name), ifoWordcount("wordcount"), 
+	                                                                 ifoIdxfilesize("idxfilesize"), wordcount(0), idxfilesize(0), 
+																	 mpFileDict(nullptr)
 {
 	setNameFiles();
 	
 	if (!loadData())
 	{
 		qDebug() << "Error loadData()!";
-		//return;
 	}
 	//getTagForDict(this);
 }
@@ -83,51 +82,6 @@ bool Dictionary::loadData()
 	return true;
 }
 
-void getTagForDict(Dictionary* p)
-{
-	QString str;
-	QStringList strList;
-	//QRegExp reg("(</?[a-z]+\\s?/?>)");
-	QRegExp reg("(<k>.+</k>\\n ?<(?!tr))");
-	QString tag;
-	int pos;
-
-	QFile fileIn(p ->fileParseIdx);
-	
-	if (fileIn.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QTextStream in(&fileIn);
-		int i;
-		QString temp;
-		while (true)
-		{
-			temp = in.readLine();
-			in >> i >> i;
-			in.read(1);
-			str = p ->mpFileDict ->read(i);
-			//str = p ->mpFileDict ->readLine();
-			if (p ->mpFileDict ->atEnd())
-				break;
-			pos = 0;
-			while ((pos = reg.indexIn(str, pos)) != -1)
-			{
-				
-				tag = reg.cap(0);
-				//p ->ui.textEdit ->setText(tag);
-				if (!strList.contains(tag))
-				{
-					strList << tag;
-					qDebug() << tag;
-				}
-				pos += reg.matchedLength();
-			}
-		}
-	}
-	//foreach(QString s, strList)
-	//	p ->ui.textEdit ->append(s);//setText(s);
-	
-}
-
 bool Dictionary::parsingIfo()
 {
 	QFile fileIn(fileIfo);
@@ -191,7 +145,8 @@ bool Dictionary::parsingIdx()
 					str += ch;
 				else
 				{
-					//ui.textEdit ->append(str);
+					quint32 offset;
+					quint32 size;
 					in >> offset >> size;
 					out << str << '\n' << offset << " " << size << '\n'; 
 					str.clear();
@@ -216,8 +171,8 @@ bool Dictionary::createHash()
 	{
 		QTextStream in(&fileIn); 
 		QString str;
-		offset = 0;
-		size   = 0;
+		quint32 offset = 0;
+		quint32 size   = 0;
 		while (true)
 		{
 			str = in.readLine();
@@ -252,67 +207,19 @@ bool Dictionary::loadHash()
 	return false;
 }
 
-// форматирование перевода
-void Dictionary::formattingTr(QString& str)
-{
-	str.replace(QRegExp("\n<tr>"), "<tr>"); // транскрипция без переноса на следующую строку
-	str.replace("<tr>", " <t>[");  // тег <tr> меняется на <t>, иначе, при переводе в html,
-	str.replace("</tr>", "]</t>"); // этот текст вырезается; транскрипцию в [], 
-	str.replace("\n", "<br />"); // 0x0A меняется на тег новой строки
-	str.remove(QRegExp("<rref>.+</rref>")); // ссылки на ресурсы удаляются
-	//str.replace("<c>", "<font color=\"red\">"); так можно задать цвет 
-	// тег интернет-ссылки меняется на тег html-гиперссылки
-	str.replace("<iref>", "<a>");
-	str.replace("</iref>", "</a>");
-	str.replace("web-site:", "<br />web-site:"); // "web-site:" с новой строки
-	
-	// создание из интернет-ссылки html-гиперссылки
-	QRegExp reg("<a>(.+)</a>");
-	QString href;
-	int pos = 0;
-	while ((pos = reg.indexIn(str, pos)) != -1)
-	{
-		href = reg.cap(1);
-		str.replace(pos + 2, href.size() + 1, " href=\"" + href + "\">" + href);
-		pos += reg.matchedLength();
-	}
-	// добавление сокращённого имени словаря
-	QString ins = "&nbsp;&nbsp;&nbsp;&nbsp;<font color=\"#ff00ff\"><b><i>" + mName + "</i></b></font><br />";
-	str.insert(0, ins);
-	str.push_back("<br />");
-	//qDebug() << str;
-	
-	HTMLfromString(str); // в html-текст (с CSS)
-}
-
-// из QString в HTML-текст (задание стилей CSS)
-void Dictionary::HTMLfromString(QString& str)
-{
-	QString begin("<html><head>");
-	QString style("<style type=text/css>"
-		          "k {font-weight: bold}"
-				  "kref {color: #008080; font-size: 5; font-weight: bold}"
-				  "t {font-size: 5; font-family: \"Lucida Sans Unicode\"}"
-				  "c {color: blue}");
-	QString end("</style></head><body>" + str + "</body></html>");
-	str = begin + style + end;
-}
-
 // получение первода из .dict
 QString Dictionary::getTr(const QString& word)
 {
-	offset = 0;
-	size = 0;
-	QString translation = "";
+	QString translation;
 	if (!word.isEmpty())
 	{
 		if (mHash.contains(word))
 		{
 			QPair <quint32, quint32> pair(mHash.value(word)); // получение смещения и размера из хеша
-			offset = pair.first;
-			size   = pair.second;
+			quint32 offset = pair.first;
+			quint32 size   = pair.second;
 			
-			char* buffer = new char[size + 1]; // буфер под первод
+			char* buffer = new char[size + 1]; // буфер под перевод
 			mpFileDict ->seek(0);
 			mpFileDict ->seek(offset); // переход к переводу
 			mpFileDict ->read(buffer, size); // чтение перевода
@@ -320,8 +227,6 @@ QString Dictionary::getTr(const QString& word)
 			
 			translation = QString::fromUtf8(buffer); // первод в QString из UTF-8
 			delete buffer;
-			
-			formattingTr(translation); // форматирование перевода
 		}
 	}
 	return translation;

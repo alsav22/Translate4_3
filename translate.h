@@ -44,6 +44,7 @@ private:
 		QStringList        mCurrentListFileName;
 		QString            mCurrentFileName;
 		QString            mCurrentWord;
+		QString            mCurrentTranslate;
 		qint32             mCurrentIndex; // индекс элемента в текущих списках
 		
 		QClipboard*        mpClipboard;
