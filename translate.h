@@ -111,7 +111,8 @@ public:
 
 		inline void setCurrentDataForItemCache(QListWidgetItem* item);
 
-		inline void outputTr(QString& translation); // вывод перевода
+		//inline void outputTr(QString& translation); // вывод перевода
+		inline void findTr(const QString& word); // поиск и вывод перевода
 	    
 		~MyWidget()
 		{

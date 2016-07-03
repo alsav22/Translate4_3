@@ -138,11 +138,11 @@ public:
 	// вывод перевода
 	void outputTr(QString& translation, Ui::Form* ui)
 	{
-		ui ->labelOutput ->clear();
+		ui ->textEdit ->clear();
 		if (!translation.isEmpty())
-			ui ->labelOutput ->setText(translation);
+			ui ->textEdit ->setText(translation);
 		else
-			ui ->labelOutput ->setText(QWidget::tr("Слово не найдено!"));
+			ui ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
 	}
 	
 	~DictProgram()

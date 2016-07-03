@@ -552,7 +552,9 @@ qDebug() << QWidget::tr("Выбранный файл");
 		uiForm ->lineEditInput ->setText(SoundFile::extractWordGroup(mCurrentListFileName[mCurrentIndex]));
 		mCurrentWord = uiForm ->lineEditInput ->text();
 		mpClipboard ->setText(mCurrentWord);
-		//uiForm ->labelNote ->setText(mpCurrentSoundFile ->getNote().stringForNote()); // вывод примечания (Note), текущего SoundFile, строкой
+		
+		findTr(mCurrentWord); // поиск и вывод перевода
+
 #ifdef DEBUG
 qDebug() << QWidget::tr("Изменился!");
 #endif	
@@ -695,6 +697,8 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	setCurrentDataForItemCache(item);
 	                                                          
 	play(mCurrentAbsFilePath);
+	
+	findTr(mCurrentWord); // поиск и вывод перевода
 }
 
 // Воспроизведение файла
@@ -849,9 +853,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			#endif
 			choiceItemFromCacheWord(item); // выбор слова из кеша
 			
-			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
-			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
-			
+			findTr(word); // поиск и вывод перевода
 			break;
 		}
 		else if (item)
@@ -867,8 +869,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
-			dictProgram.translate(word, mCurrentTranslate); // поиск перевода
-			dictProgram.outputTr(mCurrentTranslate, uiForm); // вывод перевода
+			findTr(word); // поиск и вывод перевода
 			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);
@@ -885,11 +886,19 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 	} // switch (checkWord(word))
 }
 
-// вывод перевода
-void MyWidget::outputTr(QString& translation)
+// поиск и вывод перевода
+void MyWidget::findTr(const QString& word)
 {
-	uiForm ->labelOutput ->clear();
-	uiForm ->labelOutput ->setText(translation);
+#ifdef DEBUG	
+	qDebug() <<  QWidget::tr("Поиск и вывод перевода!");
+#endif
+	dictProgram.translate(word, mCurrentTranslate); // поиск перевода
+	// вывод перевода
+	uiForm ->textEdit ->clear();
+	if (!mCurrentTranslate.isEmpty())
+		uiForm ->textEdit ->setText(mCurrentTranslate);
+	else
+		uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
 }
 
 void MyWidget::changeStateButton(QAbstractButton* pButton)
