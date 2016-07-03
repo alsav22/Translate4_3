@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>939</width>
-    <height>489</height>
+    <height>765</height>
    </rect>
   </property>
   <property name="font">
@@ -122,8 +122,8 @@
   <widget class="QCommandLinkButton" name="commandLinkButton">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>165</y>
+     <x>710</x>
+     <y>695</y>
      <width>191</width>
      <height>42</height>
     </rect>
@@ -245,8 +245,8 @@
   <widget class="QListWidget" name="cacheWord">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>260</y>
+     <x>30</x>
+     <y>530</y>
      <width>421</width>
      <height>151</height>
     </rect>
@@ -291,14 +291,42 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>485</x>
-     <y>220</y>
+     <x>50</x>
+     <y>490</y>
      <width>66</width>
      <height>19</height>
     </rect>
    </property>
    <property name="text">
     <string>Кеш:</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>175</y>
+     <width>421</width>
+     <height>506</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>495</x>
+     <y>135</y>
+     <width>101</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Перевод:</string>
    </property>
   </widget>
  </widget>
