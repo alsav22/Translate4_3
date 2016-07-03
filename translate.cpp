@@ -41,17 +41,13 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	
 	mMyPlayer.createMyPlayer(uiForm);
 	
+	// загрузка и вывод кеша
 	if (loadCache())
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
 
-	//for (int i = 0; i < uiForm ->cacheWord ->count(); ++i)
-	//{
-	//	/*uiForm ->cacheWord ->item(i) ->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);*/
-	//	uiForm ->cacheWord ->item(i) ->setIcon(QPixmap("images/cursor.png"));
-	//}
-	
 	mpClipboard = QApplication::clipboard(); 
 	fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
+	findTr(mCurrentWord); // поиск и вывод перевода
 	
 	// при изменении буфера обмена, текст из буфера -> в строку ввода
 	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
@@ -893,6 +889,8 @@ void MyWidget::findTr(const QString& word)
 #ifdef DEBUG	
 	qDebug() <<  QWidget::tr("Поиск и вывод перевода!");
 #endif
+	if (word.isEmpty())
+		return;
 	dictProgram.translate(word, mCurrentTranslate); // поиск перевода
 	// вывод перевода
 	uiForm ->textEdit ->clear();

@@ -12,8 +12,8 @@ bool start()
 	Data data;
     if (data.download())
 	{
-		QSplashScreen splash(QPixmap("5.png"));
-		splash.show();
+		//QSplashScreen splash(QPixmap("5.png"));
+		//splash.show();
 		
 		if (data.loadHash())
 			return true;

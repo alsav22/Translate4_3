@@ -20,6 +20,8 @@ int main(int argc, char **argv)
 	
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("CP1251"));
 	
+	QSplashScreen splash(QPixmap("5.png"));
+	splash.show();
 
 	if (!start())
 	{
@@ -36,6 +38,7 @@ int main(int argc, char **argv)
 	myWidget.move(600, 150);
 
     myWidget.show();
+	splash.close();
 
 	return app.exec();
 }
