@@ -42,14 +42,14 @@ public:
     QCheckBox *checkBox;
     QListWidget *cacheWord;
     QLabel *label;
-    QTextEdit *textEdit;
     QLabel *label_2;
+    QTextEdit *textEdit;
 
     void setupUi(QWidget *Form)
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QString::fromUtf8("Form"));
-        Form->resize(939, 748);
+        Form->resize(938, 732);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial"));
         font.setPointSize(10);
@@ -88,7 +88,7 @@ public:
         volumeSlider->setMaximumVolume(1);
         commandLinkButton = new QCommandLinkButton(Form);
         commandLinkButton->setObjectName(QString::fromUtf8("commandLinkButton"));
-        commandLinkButton->setGeometry(QRect(710, 695, 191, 42));
+        commandLinkButton->setGeometry(QRect(595, 160, 191, 42));
         commandLinkButton->setFont(font);
         commandLinkButton->setCursor(QCursor(Qt::PointingHandCursor));
         commandLinkButton->setIconSize(QSize(40, 40));
@@ -121,7 +121,7 @@ public:
         checkBox->setGeometry(QRect(40, 440, 351, 23));
         cacheWord = new QListWidget(Form);
         cacheWord->setObjectName(QString::fromUtf8("cacheWord"));
-        cacheWord->setGeometry(QRect(30, 530, 421, 191));
+        cacheWord->setGeometry(QRect(480, 260, 421, 436));
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         cacheWord->setMouseTracking(true);
@@ -134,16 +134,13 @@ public:
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(50, 490, 66, 19));
-        textEdit = new QTextEdit(Form);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(480, 175, 421, 506));
-        QFont font4;
-        font4.setPointSize(11);
-        textEdit->setFont(font4);
+        label->setGeometry(QRect(495, 220, 66, 19));
         label_2 = new QLabel(Form);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(495, 135, 101, 19));
+        label_2->setGeometry(QRect(40, 490, 101, 19));
+        textEdit = new QTextEdit(Form);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        textEdit->setGeometry(QRect(30, 530, 416, 166));
 
         retranslateUi(Form);
         QObject::connect(lineEditInput, SIGNAL(textChanged(QString)), labelOutput, SLOT(clear()));
