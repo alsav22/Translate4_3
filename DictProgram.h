@@ -52,6 +52,7 @@ public:
 			Dictionary* pdict = new Dictionary(mvectorNamesDicts[i].first, mvectorNamesDicts[i].second);
 			mvectorPointsToDicts.push_back(pdict);
 		}
+		return true;
 	}
 
 	void initVectorCheckBox()
