@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	
 	QObject::connect(&myWidget, SIGNAL(destroyed()), &app, SLOT(quit()));
 	
-	myWidget.move(700, 400);
+	myWidget.move(600, 150);
 
     myWidget.show();
 

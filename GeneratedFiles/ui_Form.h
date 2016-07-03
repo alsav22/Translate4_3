@@ -21,6 +21,7 @@
 #include <QtGui/QListWidget>
 #include <QtGui/QRadioButton>
 #include <QtGui/QSpinBox>
+#include <QtGui/QTextEdit>
 #include <QtGui/QWidget>
 #include <phonon/volumeslider.h>
 
@@ -41,12 +42,14 @@ public:
     QCheckBox *checkBox;
     QListWidget *cacheWord;
     QLabel *label;
+    QTextEdit *textEdit;
+    QLabel *label_2;
 
     void setupUi(QWidget *Form)
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QString::fromUtf8("Form"));
-        Form->resize(939, 489);
+        Form->resize(939, 748);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial"));
         font.setPointSize(10);
@@ -85,7 +88,7 @@ public:
         volumeSlider->setMaximumVolume(1);
         commandLinkButton = new QCommandLinkButton(Form);
         commandLinkButton->setObjectName(QString::fromUtf8("commandLinkButton"));
-        commandLinkButton->setGeometry(QRect(480, 165, 191, 42));
+        commandLinkButton->setGeometry(QRect(710, 695, 191, 42));
         commandLinkButton->setFont(font);
         commandLinkButton->setCursor(QCursor(Qt::PointingHandCursor));
         commandLinkButton->setIconSize(QSize(40, 40));
@@ -118,7 +121,7 @@ public:
         checkBox->setGeometry(QRect(40, 440, 351, 23));
         cacheWord = new QListWidget(Form);
         cacheWord->setObjectName(QString::fromUtf8("cacheWord"));
-        cacheWord->setGeometry(QRect(480, 260, 421, 151));
+        cacheWord->setGeometry(QRect(30, 530, 421, 191));
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         cacheWord->setMouseTracking(true);
@@ -131,7 +134,16 @@ public:
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(485, 220, 66, 19));
+        label->setGeometry(QRect(50, 490, 66, 19));
+        textEdit = new QTextEdit(Form);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        textEdit->setGeometry(QRect(480, 175, 421, 506));
+        QFont font4;
+        font4.setPointSize(11);
+        textEdit->setFont(font4);
+        label_2 = new QLabel(Form);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(495, 135, 101, 19));
 
         retranslateUi(Form);
         QObject::connect(lineEditInput, SIGNAL(textChanged(QString)), labelOutput, SLOT(clear()));
@@ -158,6 +170,7 @@ public:
         label_3->setText(QApplication::translate("Form", "\320\227\320\262\321\203\320\272\320\276\320\262\321\213\320\265 \321\204\320\260\320\271\320\273\321\213:", 0, QApplication::UnicodeUTF8));
         checkBox->setText(QApplication::translate("Form", "\320\222\321\213\320\262\320\265\321\201\321\202\320\270 \321\201\320\273\320\276\320\262\320\276\321\201\320\276\321\207\320\265\321\202\320\260\320\275\320\270\321\217 (Alt + \342\206\222)", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("Form", "\320\232\320\265\321\210:", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("Form", "\320\237\320\265\321\200\320\265\320\262\320\276\320\264:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
