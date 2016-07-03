@@ -7,26 +7,47 @@
 
 class DictProgram //: public QWidget
 {
-	//Q_OBJECT
-
+	
 public:
-	DictProgram(/*QWidget *parent = 0, Qt::WFlags flags = 0*/) //: QWidget(parent, flags)
+	DictProgram() : mNumberDicts(0)
 	{
-		initialization();
+		if (!initialization())
+		{
+			qDebug() << "Error initialization()!";
+		}
 	}
 
-	void initialization()
+	bool initialization()
 	{
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-ER-LingvoUniversal-2.4.2"), QString(QWidget::tr("Общей лексики"))));
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Informal-2.4.2"), QString(QWidget::tr("Разговорной лексики"))));
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Computer-2.4.2"), QString(QWidget::tr("Компьютерный"))));
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Polytechnical-2.4.2"), QString(QWidget::tr("Политехнический"))));
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Biology-2.4.2"), QString(QWidget::tr("Биологический"))));
-		mvectorNamesDicts.push_back(qMakePair(QString("stardict-lingvo-ER-Medical-2.4.2"), QString(QWidget::tr("Медицинский"))));
+		QFile fileIn("DirsDicts.txt");
+		if (!fileIn.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			qDebug() << "Error opening file DirsDicts.txt!";
+			return false;
+		}
+		QTextStream rd(&fileIn);
+		QString DirDict;
+		QString NameForOut;
+		while (true)
+		{
+			DirDict = rd.readLine();
+			if (rd.atEnd())
+				break;
+			NameForOut = rd.readLine();
+			
+			mvectorNamesDicts.push_back(qMakePair(DirDict, NameForOut));
+		}
+		
+		mNumberDicts = mvectorNamesDicts.size();
+		if (mNumberDicts == 0)
+		{
+			qDebug() << "The dictionaries are not found!";
+			return false;
+		}
 		
 		initVectorCheckBox();
 		
-		for (int i = 0; i < mvectorNamesDicts.size(); ++i)
+		for (int i = 0; i < mNumberDicts; ++i)
 		{
 			Dictionary* pdict = new Dictionary(mvectorNamesDicts[i].first, mvectorNamesDicts[i].second);
 			mvectorPointsToDicts.push_back(pdict);
@@ -35,7 +56,7 @@ public:
 
 	void initVectorCheckBox()
 	{
-		for (int i = 0; i < mvectorNamesDicts.size(); ++i)
+		for (int i = 0; i < mNumberDicts; ++i)
 		{
 			QCheckBox* pCheckBox = new QCheckBox();
 			if (i == 0)
@@ -139,5 +160,6 @@ private:
 	QVector <QPair <QString, QString> > mvectorNamesDicts; // контейнер с именами словарей (папок)
 	QVector <Dictionary*> mvectorPointsToDicts; // контейнер с указателями на словари
 	QVector <QCheckBox*> mvectorPointsToCheckBox; // контейнер с указателями на чек-боксы
+	quint8 mNumberDicts; // колличество словарей
 };
 #endif

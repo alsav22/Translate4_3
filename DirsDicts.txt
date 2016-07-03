@@ -1,0 +1,12 @@
+stardict-ER-LingvoUniversal-2.4.2
+Общей лексики
+stardict-lingvo-ER-Informal-2.4.2
+Разговорной лексики
+stardict-lingvo-ER-Computer-2.4.2
+Компьютерный
+stardict-lingvo-ER-Polytechnical-2.4.2
+Политехнический
+stardict-lingvo-ER-Biology-2.4.2
+Биологический
+stardict-lingvo-ER-Medical-2.4.2
+Медицинский
