@@ -141,6 +141,7 @@ public:
         textEdit = new QTextEdit(Form);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
         textEdit->setGeometry(QRect(30, 530, 416, 166));
+        textEdit->setReadOnly(true);
 
         retranslateUi(Form);
         QObject::connect(lineEditInput, SIGNAL(textChanged(QString)), labelOutput, SLOT(clear()));

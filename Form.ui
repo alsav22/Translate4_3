@@ -323,6 +323,9 @@
      <height>166</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
  </widget>
  <customwidgets>
