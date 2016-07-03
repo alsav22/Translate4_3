@@ -60,7 +60,7 @@ public:
 		for (int i = 0; i < mNumberDicts; ++i)
 		{
 			QCheckBox* pCheckBox = new QCheckBox();
-			if (i == 0)
+			//if (i == 0)
 				pCheckBox ->setChecked(true); // общ.
 			mvectorPointsToCheckBox.push_back(pCheckBox);
 		}
