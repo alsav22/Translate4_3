@@ -694,11 +694,12 @@ void MyWidget::setCurrentDataForItemCache(QListWidgetItem* item)
 
 void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из кеша
 {
+	QString temp = mCurrentWord;
 	setCurrentDataForItemCache(item);
 	                                                          
 	play(mCurrentAbsFilePath);
-	
-	findTr(mCurrentWord); // поиск и вывод перевода
+	if (temp != mCurrentWord)
+		findTr(mCurrentWord); // поиск и вывод перевода
 }
 
 // ¬оспроизведение файла
