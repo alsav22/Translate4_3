@@ -899,9 +899,10 @@ void MyWidget::findTr(const QString& word)
 	if (!mCurrentTranslate.isEmpty())
 		uiForm ->textEdit ->setText(mCurrentTranslate);
 	else if (word.contains(' '))
-		 uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
-	else
 		 uiForm ->textEdit ->setText(QWidget::tr("Словосочетание\n не найдено!"));
+	else
+		uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
+		 
 }
 
 void MyWidget::changeStateButton(QAbstractButton* pButton)
