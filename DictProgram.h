@@ -92,8 +92,8 @@ public:
 		str.replace("<tr>", " <t>[");  // тег <tr> меняется на <t>, иначе, при переводе в html,
 		str.replace("</tr>", "]</t>"); // этот текст вырезается; транскрипцию в [], 
 		str.replace("\n", "<br />"); // 0x0A меняется на тег новой строки
-		//str.remove(QRegExp("<rref>.+</rref>")); // ссылки на ресурсы удаляются
-		str.remove(QRegExp("<rref>([a-zA-Z0-9. -])+</rref>")); // ссылки на ресурсы удаляются
+		//str.remove(QRegExp("<rref>([a-zA-Z0-9. -])+</rref>")); // ссылки на ресурсы удаляются
+		str.remove(QRegExp("<rref>[^<]+</rref>")); // ссылки на ресурсы удаляются
 		//str.replace("<c>", "<font color=\"red\">"); так можно задать цвет 
 		// тег интернет-ссылки меняется на тег html-гиперссылки
 		str.replace("<iref>", "<a>");
