@@ -879,6 +879,8 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			else
 				uiForm ->labelOutput ->setText(QWidget::tr("Слово не найдено!"));
 			uiForm ->listWidgetFiles ->clear();
+
+			findTr(word); // поиск и вывод перевода
 		}
 	} // switch (checkWord(word))
 }
@@ -896,8 +898,10 @@ void MyWidget::findTr(const QString& word)
 	uiForm ->textEdit ->clear();
 	if (!mCurrentTranslate.isEmpty())
 		uiForm ->textEdit ->setText(mCurrentTranslate);
+	else if (word.contains(' '))
+		 uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
 	else
-		uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
+		 uiForm ->textEdit ->setText(QWidget::tr("Словосочетание\n не найдено!"));
 }
 
 void MyWidget::changeStateButton(QAbstractButton* pButton)
