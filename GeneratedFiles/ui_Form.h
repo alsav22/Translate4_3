@@ -49,7 +49,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QString::fromUtf8("Form"));
-        Form->resize(938, 732);
+        Form->resize(1003, 679);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial"));
         font.setPointSize(10);
@@ -58,7 +58,7 @@ public:
         Form->setFocusPolicy(Qt::WheelFocus);
         lineEditInput = new QLineEdit(Form);
         lineEditInput->setObjectName(QString::fromUtf8("lineEditInput"));
-        lineEditInput->setGeometry(QRect(30, 70, 421, 41));
+        lineEditInput->setGeometry(QRect(35, 70, 301, 41));
         QFont font1;
         font1.setFamily(QString::fromUtf8("Arial"));
         font1.setPointSize(12);
@@ -71,7 +71,7 @@ public:
         labelInput->setFont(font);
         labelOutput = new QLabel(Form);
         labelOutput->setObjectName(QString::fromUtf8("labelOutput"));
-        labelOutput->setGeometry(QRect(480, 30, 421, 81));
+        labelOutput->setGeometry(QRect(380, 35, 581, 81));
         labelOutput->setFont(font1);
         labelOutput->setLayoutDirection(Qt::LeftToRight);
         labelOutput->setFrameShape(QFrame::Box);
@@ -79,7 +79,7 @@ public:
         labelOutput->setAlignment(Qt::AlignCenter);
         volumeSlider = new Phonon::VolumeSlider(Form);
         volumeSlider->setObjectName(QString::fromUtf8("volumeSlider"));
-        volumeSlider->setGeometry(QRect(30, 170, 211, 30));
+        volumeSlider->setGeometry(QRect(30, 170, 186, 30));
         QFont font2;
         font2.setFamily(QString::fromUtf8("Arial"));
         font2.setPointSize(9);
@@ -88,7 +88,7 @@ public:
         volumeSlider->setMaximumVolume(1);
         commandLinkButton = new QCommandLinkButton(Form);
         commandLinkButton->setObjectName(QString::fromUtf8("commandLinkButton"));
-        commandLinkButton->setGeometry(QRect(595, 160, 191, 42));
+        commandLinkButton->setGeometry(QRect(40, 600, 191, 42));
         commandLinkButton->setFont(font);
         commandLinkButton->setCursor(QCursor(Qt::PointingHandCursor));
         commandLinkButton->setIconSize(QSize(40, 40));
@@ -99,13 +99,13 @@ public:
         radioButtonRepeat->setCursor(QCursor(Qt::PointingHandCursor));
         spinBox = new QSpinBox(Form);
         spinBox->setObjectName(QString::fromUtf8("spinBox"));
-        spinBox->setGeometry(QRect(385, 125, 66, 31));
+        spinBox->setGeometry(QRect(270, 125, 66, 31));
         spinBox->setFont(font);
         spinBox->setCursor(QCursor(Qt::PointingHandCursor));
         spinBox->setValue(3);
         listWidgetFiles = new QListWidget(Form);
         listWidgetFiles->setObjectName(QString::fromUtf8("listWidgetFiles"));
-        listWidgetFiles->setGeometry(QRect(30, 260, 421, 151));
+        listWidgetFiles->setGeometry(QRect(30, 260, 306, 281));
         QFont font3;
         font3.setFamily(QString::fromUtf8("Arial"));
         font3.setPointSize(11);
@@ -118,10 +118,10 @@ public:
         label_3->setGeometry(QRect(40, 220, 171, 19));
         checkBox = new QCheckBox(Form);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setGeometry(QRect(40, 440, 351, 23));
+        checkBox->setGeometry(QRect(30, 560, 351, 23));
         cacheWord = new QListWidget(Form);
         cacheWord->setObjectName(QString::fromUtf8("cacheWord"));
-        cacheWord->setGeometry(QRect(480, 260, 421, 436));
+        cacheWord->setGeometry(QRect(380, 175, 241, 471));
         cacheWord->setFont(font3);
         cacheWord->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         cacheWord->setMouseTracking(true);
@@ -134,13 +134,13 @@ public:
         cacheWord->setSortingEnabled(true);
         label = new QLabel(Form);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(495, 220, 66, 19));
+        label->setGeometry(QRect(390, 135, 66, 19));
         label_2 = new QLabel(Form);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(40, 490, 101, 19));
+        label_2->setGeometry(QRect(675, 135, 101, 19));
         textEdit = new QTextEdit(Form);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(30, 530, 416, 166));
+        textEdit->setGeometry(QRect(660, 175, 306, 471));
         textEdit->setReadOnly(true);
 
         retranslateUi(Form);
