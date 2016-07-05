@@ -158,12 +158,17 @@ protected:
 		}
 	}
 
-//protected:
-//	void mousePressEvent(QMouseEvent* pme)
-//	{
-//		if (pme ->button() == Qt::RightButton)
-//			qDebug() << "Qt::RightButton";
-//	}
+protected:
+	void mousePressEvent(QMouseEvent* pme)
+	{
+		if (pme ->button() == Qt::LeftButton)
+		{
+			qDebug() << "Qt::LeftButton";
+			QWidget* p = this ->focusWidget();
+			if (p)
+				qDebug() << p ->objectName();
+		}
+	}
 };
 
 //void extractFiles(const QStringList& listFiles, MyWidget*);
