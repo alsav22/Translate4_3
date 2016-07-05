@@ -62,6 +62,7 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	qDebug() << uiForm ->lineEditInput ->text();
 		
 		QString word = (mpClipboard ->text()).trimmed().toLower();
+	    //QString word = (mpClipboard ->text()).trimmed();
 		uiForm ->lineEditInput ->setText(word);
 		
 		previewToCache(word); // просмотр кеша
@@ -738,8 +739,8 @@ int MyWidget::checkWord(const QString& word)
 	//QRegExp reg2("[a-z]+|-",Qt::CaseInsensitive);
 	//for (int i = 0; i < word.size(); ++i)
 	//{
-		if (reg.indexIn(word) != -1) 
-			return 2;
+		//if (reg.indexIn(word) != -1) 
+			//return 2;
 	//}
 	// если введено то же самое слово, что не было найдено перед этим (лист найденных файлов - пуст)
 	if (mCurrentAbsFilePath == "" && mCurrentWord == word) 
@@ -801,9 +802,11 @@ qDebug() << QWidget::tr("Нажата Enter");
 	{
 	case 1 : 
 		uiForm ->labelOutput ->setText(QWidget::tr("Введите слово!"));
+		uiForm ->textEdit ->clear();
 		break;
 	case 2 :
 		uiForm ->labelOutput ->setText(QWidget::tr("Недопустимые символы\nв слове!"));
+		uiForm ->textEdit ->clear();
 		break;
 	
 	case 3 :
