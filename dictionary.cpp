@@ -130,6 +130,7 @@ bool Dictionary::parsingIdx()
 		QDataStream in(&fileIn);
 		QTextStream out(&fileOut); 
 		QString str;
+		QByteArray arr;
 		
 		while (!in.atEnd())
 		{
@@ -142,14 +143,15 @@ bool Dictionary::parsingIdx()
 			else
 			{
 				if (ch)
-					str += ch;
+					arr.append(ch);
 				else
 				{
 					quint32 offset;
 					quint32 size;
 					in >> offset >> size;
+					str = QString::fromUtf8(arr.data());
 					out << str << '\n' << offset << " " << size << '\n'; 
-					str.clear();
+					arr.clear();
 				}
 			}
 		}
