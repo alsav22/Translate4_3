@@ -80,7 +80,7 @@ void MyWidget::fromClipboardToLineEdit() // слот
 			return;
 		}
 		
-		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
+		qint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
 			uiForm ->lineEditInput ->setFocus();
 		else
