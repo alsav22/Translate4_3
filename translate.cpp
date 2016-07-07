@@ -63,7 +63,7 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	if (mpClipboard ->text().size() < 35)
 	{
 		uiForm ->lineEditInput ->setText(mpClipboard ->text());
-		quint32 n = getIndexString(mCurrentListFileName, uiForm ->lineEditInput ->text(), "OneWord");
+		qint32 n = getIndexString(mCurrentListFileName, uiForm ->lineEditInput ->text(), "OneWord");
 		if (n == -1)
 			uiForm ->lineEditInput ->setFocus();
 		else
