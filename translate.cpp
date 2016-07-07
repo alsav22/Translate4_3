@@ -45,13 +45,16 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	if (loadCache())
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
 
-	mpClipboard = QApplication::clipboard(); 
-	fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
-	findTr(mCurrentWord); // поиск и вывод перевода
-	
+	mpClipboard = QApplication::clipboard();
+
 	// при изменении буфера обмена, текст из буфера -> в строку ввода
 	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
 	QObject::connect(uiForm ->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(previewToCache(QString)));
+	
+	if (!mpClipboard ->text().isEmpty() && mpClipboard ->text().size() < 35)
+		fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
+	if (!mCurrentWord.isEmpty())
+		findTr(mCurrentWord); // поиск и вывод перевода
 }
 
 void MyWidget::fromClipboardToLineEdit() // слот
@@ -61,8 +64,8 @@ void MyWidget::fromClipboardToLineEdit() // слот
 	qDebug() << mpClipboard ->text();
 	qDebug() << uiForm ->lineEditInput ->text();
 		
-		QString word = (mpClipboard ->text()).trimmed().toLower();
-	    //QString word = (mpClipboard ->text()).trimmed();
+		//QString word = (mpClipboard ->text()).trimmed().toLower();
+	    QString word = (mpClipboard ->text()).trimmed();
 		uiForm ->lineEditInput ->setText(word);
 		
 		previewToCache(word); // просмотр кеша
@@ -78,7 +81,7 @@ void MyWidget::fromClipboardToLineEdit() // слот
 		//else
 			//uiForm ->lineEditInput ->setFocus();
 
-		quint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
+		qint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
 			uiForm ->lineEditInput ->setFocus();
 		else
@@ -735,7 +738,7 @@ int MyWidget::checkWord(const QString& word)
 		return 1;
 	// неподустимый символ в слове (тире в начале, тире в конце, не английская буква и не пробел,
 	// два тире подряд или не подряд
-	QRegExp reg("^-|[^a-z- ]|-$|-.*-", Qt::CaseInsensitive);
+	QRegExp reg("^-|[^a-z- ]|-$|-.*-"/*, Qt::CaseInsensitive*/);
 	//QRegExp reg2("[a-z]+|-",Qt::CaseInsensitive);
 	//for (int i = 0; i < word.size(); ++i)
 	//{
@@ -795,7 +798,8 @@ void MyWidget::pressedEnter()
 #ifdef DEBUG 
 qDebug() << QWidget::tr("Нажата Enter");
 #endif
-    QString word = (uiForm ->lineEditInput ->text()).trimmed().toLower();
+    QString word = (uiForm ->lineEditInput ->text()).trimmed();//.toLower();
+	
 	uiForm ->lineEditInput ->setText(word);
 	int ind = 0;
 	switch (checkWord(word))
