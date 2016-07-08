@@ -73,13 +73,12 @@ bool SoundFile::startsWithOneWord(const QString& fileName, const QString& word)
 	/*int end = word.size();
 	if (fileName.startsWith(word, Qt::CaseInsensitive) &&
 	   (fileName[end] == '.'   ||
-	    fileName[end] == delim   )  )
+	    fileName[end] == GlobalVariables::getGlobalVariables().delim))
 			return true;
 	return false;*/
-
 	
-	QRegExp reg(QString("^" + word + "[" + GlobalVariables::getGlobalVariables().delim + "\\.]")/*, Qt::CaseInsensitive*/);
-		                                                                   
+	QRegExp reg(QString("^"  + QRegExp::escape(word) + "[" + GlobalVariables::getGlobalVariables().delim + "\\.]"));
+	
 	if (reg.indexIn(fileName) != -1)
 			return true;
 	return false;
@@ -99,7 +98,7 @@ bool SoundFile::startsWithWordGroup(const QString& fileName, const QString& word
 			return true;
 	return false;*/
 	
-	QRegExp reg(QString("^" + word + "[- ]")/*, Qt::CaseInsensitive*/);
+	QRegExp reg(QString("^" +  QRegExp::escape(word) + "[- ]")/*, Qt::CaseInsensitive*/);
 	if (reg.indexIn(fileName) != -1)
 			return true;
 	return false;
@@ -112,8 +111,9 @@ bool SoundFile::startsWithWord(const QString& fileName, const QString& word)
 	/*if (fileName.startsWith(word, Qt::CaseInsensitive))
 	   return true;
 	return false;*/
-
-	QRegExp reg(QString("^" + word)/*, Qt::CaseInsensitive*/);
+	
+	QRegExp reg(QString("^" + QRegExp::escape(word))/*, Qt::CaseInsensitive*/);
+	
 	if (reg.indexIn(fileName) != -1)
 			return true;
 	return false;
