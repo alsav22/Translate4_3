@@ -31,6 +31,15 @@
 
 #ifdef DEBUG
 #include <ctime>
+void test()
+{
+	bool f1 = SoundFile::startsWithWordGroup("* sdf", "*");
+	bool f2 = SoundFile::startsWithWordGroup("a sdf", "a");
+	bool f3 = SoundFile::startsWithWordGroup(". sdf", ".");
+	bool f4 = SoundFile::startsWithOneWord("a.sdf", "?");
+	bool f5 = SoundFile::startsWithOneWord("as.df", "badsa");
+	bool f6 = SoundFile::startsWithOneWord("a sd.f", "a sd");
+}
 #endif
 
 MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
@@ -39,8 +48,10 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	uiForm ->setupUi(this);
 	setWindowTitle(QWidget::tr("ѕроизношение-4"));
 	
-	mMyPlayer.createMyPlayer(uiForm);
+	//test();
 	
+	mMyPlayer.createMyPlayer(uiForm);
+
 	// загрузка и вывод кеша
 	if (loadCache())
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
@@ -738,13 +749,15 @@ int MyWidget::checkWord(const QString& word)
 		return 1;
 	// неподустимый символ в слове (тире в начале, тире в конце, не английска€ буква и не пробел,
 	// два тире подр€д или не подр€д
-	QRegExp reg("^-|[^a-z- ]|-$|-.*-"/*, Qt::CaseInsensitive*/);
-	//QRegExp reg2("[a-z]+|-",Qt::CaseInsensitive);
-	//for (int i = 0; i < word.size(); ++i)
-	//{
-		//if (reg.indexIn(word) != -1) 
-			//return 2;
-	//}
+	//QRegExp reg("^-|[^a-z- ]|-$|-.*-"/*, Qt::CaseInsensitive*/);
+    
+	// неподустимый символ в слове
+	QRegExp reg("[^a-zA-Z0-9- '*∞]");
+	for (int i = 0; i < word.size(); ++i)
+	{
+		if (reg.indexIn(word) != -1) 
+			return 2;
+	}
 	// если введено то же самое слово, что не было найдено перед этим (лист найденных файлов - пуст)
 	if (mCurrentAbsFilePath == "" && mCurrentWord == word) 
 		return 3;
