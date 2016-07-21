@@ -55,6 +55,7 @@ private:
 		quint32 mNumber; // количество файлов в папке
 
 		DictProgram dictProgram; // объект для переводов
+		QStringList mListLastWords; // список последних найденных слов
 		
 public:	
 		MyWidget(QWidget *parent = 0);
@@ -138,7 +139,7 @@ public:
 		bool saveCache();
 		
     signals:
-		void changedCurrentIndex(quint32 newInd);
+		void changedCurrentIndex(QClipboard::Mode);
 		void error();
 		
 protected:
