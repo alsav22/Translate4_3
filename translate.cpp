@@ -59,27 +59,33 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 	mpClipboard = QApplication::clipboard();
 
 	// при изменении буфера обмена, текст из буфера -> в строку ввода
-	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
+	//QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
 	QObject::connect(uiForm ->lineEditInput, SIGNAL(textChanged(QString)), this, SLOT(previewToCache(QString)));
-	
-	if (!mpClipboard ->text().isEmpty() && mpClipboard ->text().size() < 35)
+	//QObject::connect(this, SIGNAL(changedCurrentIndex(QClipboard::Mode)), mpClipboard, SIGNAL(changed(QClipboard::Mode)));
+	//mpClipboard ->userData(emitChanged(QClipboard::Clipboard);
+	//emit changedCurrentIndex(QClipboard::Mode::Clipboard);
+	//if (!mpClipboard ->text().isEmpty() && mpClipboard ->text().size() < 35)
 		fromClipboardToLineEdit(); // текст из буфера обмена -> в строку ввода слова
-	if (!mCurrentWord.isEmpty())
-		findTr(mCurrentWord); // поиск и вывод перевода
+	//if (!mCurrentWord.isEmpty())
+		//findTr(mCurrentWord); // поиск и вывод перевода
+
+	// при изменении буфера обмена, текст из буфера -> в строку ввода
+	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
 }
 
 void MyWidget::fromClipboardToLineEdit() // слот
 {
-	if (mpClipboard ->text().size() < 35)
+	if (!mpClipboard ->text().isEmpty() && mpClipboard ->text().size() < 35)
 	{
 	qDebug() << mpClipboard ->text();
+	
 	qDebug() << uiForm ->lineEditInput ->text();
 		
 		//QString word = (mpClipboard ->text()).trimmed().toLower();
 	    QString word = (mpClipboard ->text()).trimmed();
 		uiForm ->lineEditInput ->setText(word);
-		
-		previewToCache(word); // просмотр кеша
+		findTr(word); // поиск и вывод перевода
+	//	previewToCache(word); // просмотр кеша
 		
 		QListWidgetItem* item = getItemFromCache(word);
 		if (item) // если слово есть в кеше
@@ -94,16 +100,18 @@ void MyWidget::fromClipboardToLineEdit() // слот
 
 		qint32 n = getIndexString(mCurrentListFileName, word, "OneWord");
 		if (n == -1) // если слова нет в списке
-			uiForm ->lineEditInput ->setFocus();
-		else
 		{
-			qDebug() << "Index = " << n;
-			quint32 m = uniqueFileName(mCurrentListFileName, word);
-			if (m == 1) // если слово одно в списке
-				uiForm ->listWidgetFiles ->setCurrentRow(n);
-			else
-				uiForm ->listWidgetFiles ->setCurrentRow(mCurrentIndex);
+			uiForm ->lineEditInput ->setFocus();
+			return;
 		}
+		
+	qDebug() << "Index = " << n;
+		quint32 m = uniqueFileName(mCurrentListFileName, word);
+		if (m == 1) // если слово одно в списке
+			uiForm ->listWidgetFiles ->setCurrentRow(n);
+		else
+			uiForm ->listWidgetFiles ->setCurrentRow(mCurrentIndex);
+		
 	}
 }
 
@@ -564,7 +572,7 @@ qDebug() << QWidget::tr("Выбранный файл");
 		mCurrentWord = uiForm ->lineEditInput ->text();
 		mpClipboard ->setText(mCurrentWord);
 		
-		findTr(mCurrentWord); // поиск и вывод перевода
+		//findTr(mCurrentWord); // поиск и вывод перевода
 
 #ifdef DEBUG
 qDebug() << QWidget::tr("Изменился!");
@@ -696,6 +704,10 @@ void MyWidget::setCurrentDataForItemCache(QListWidgetItem* item)
 	// установка нового текущего индекса
 	setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName));  // в том числе делает и это: uiForm ->lineEditInput ->setText(mCurrentWord);
 		                                                              // uiForm ->labelOutput   ->setText(mCurrentWord);
+	/*mListLastWords << mCurrentWord;
+	qDebug() << "mListLastWords:";
+	qDebug() << mListLastWords;*/
+	
 	mpClipboard ->setText(mCurrentWord);
 	
 	uiForm ->cacheWord ->setCurrentItem(item);
@@ -709,8 +721,8 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 	setCurrentDataForItemCache(item);
 	                                                          
 	play(mCurrentAbsFilePath);
-	if (temp != mCurrentWord)
-		findTr(mCurrentWord); // поиск и вывод перевода
+	//if (temp != mCurrentWord)
+	//	findTr(mCurrentWord); // поиск и вывод перевода
 }
 
 // Воспроизведение файла
@@ -752,7 +764,7 @@ int MyWidget::checkWord(const QString& word)
 	//QRegExp reg("^-|[^a-z- ]|-$|-.*-"/*, Qt::CaseInsensitive*/);
     
 	// неподустимый символ в слове
-	QRegExp reg("[^a-zA-Z0-9- '*°]");
+	QRegExp reg("[^a-zA-Z0-9- '*°+%]");
 	for (int i = 0; i < word.size(); ++i)
 	{
 		if (reg.indexIn(word) != -1) 
@@ -854,8 +866,7 @@ qDebug() <<  QWidget::tr("Нажата Enter. Найденный файл изменился!");
 		}
 		// если такого файла в списке нет (т.е., есть только словосочетания с введённым словом), то поиск файлов
 	default :
-		// слово - в буффер обмена
-		mpClipboard ->setText(word);
+		
 #ifdef DEBUG	
 qDebug() <<  QWidget::tr("Поиск файлов!");
 #endif
@@ -870,13 +881,16 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			#endif
 			choiceItemFromCacheWord(item); // выбор слова из кеша
 			
-			findTr(word); // поиск и вывод перевода
+			//findTr(word); // поиск и вывод перевода
 			break;
 		}
 		else if (item)
 				previewToCache(word);
 			else
 				uiForm ->cacheWord ->setCurrentRow(-1);
+
+		// слово - в буффер обмена
+		mpClipboard ->setText(word);
 		
 		if (findFiles(word)) // если файлы существуют
 		{
@@ -886,11 +900,12 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 			
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
 			
-			findTr(word); // поиск и вывод перевода
+			//findTr(word); // поиск и вывод перевода
 			
 			//uiForm ->labelOutput ->setText(mCurrentWord);
 			//mpClipboard ->setText(mCurrentWord);
 			addCache(); // добавление слова и файла в кеш
+			
 		}
 		else // если файлов, с таким словом, нет
 		{
@@ -900,7 +915,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 				uiForm ->labelOutput ->setText(QWidget::tr("Слово не найдено!"));
 			uiForm ->listWidgetFiles ->clear();
 
-			findTr(word); // поиск и вывод перевода
+			//findTr(word); // поиск и вывод перевода
 		}
 	} // switch (checkWord(word))
 }
@@ -917,12 +932,19 @@ void MyWidget::findTr(const QString& word)
 	// вывод перевода
 	uiForm ->textEdit ->clear();
 	if (!mCurrentTranslate.isEmpty())
+	{
 		uiForm ->textEdit ->setText(mCurrentTranslate);
-	else if (word.contains(' '))
+
+		mListLastWords << word;
+		qDebug() << "mListLastWords:";
+		qDebug() << mListLastWords;
+
+		return;
+	}
+	if (word.contains(' '))
 		 uiForm ->textEdit ->setText(QWidget::tr("Словосочетание\n не найдено!"));
 	else
 		uiForm ->textEdit ->setText(QWidget::tr("Слово не найдено!"));
-		 
 }
 
 void MyWidget::changeStateButton(QAbstractButton* pButton)
