@@ -860,8 +860,10 @@ qDebug() <<  QWidget::tr("Нажата Enter. Найденный файл изменился!");
 		if (ind != -1) // если такой файл есть в списке
 		{
 			setNewCurrentIndex(ind); // установка нового текущего индекса
-		
+		    
 			play(mCurrentAbsFilePath); // воспроизведение текущего файла
+
+			findTr(word); // поиск и вывод перевода
 			break;
 		}
 		// если такого файла в списке нет (т.е., есть только словосочетания с введённым словом), то поиск файлов
@@ -913,7 +915,12 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 				uiForm ->labelOutput ->setText(QWidget::tr("Словосочетание\nне найдено!"));
 			else
 				uiForm ->labelOutput ->setText(QWidget::tr("Слово не найдено!"));
+			
 			uiForm ->listWidgetFiles ->clear();
+			mCurrentListFileName.clear();
+	        mCurrentListAbsFilePath.clear();
+			mCurrentAbsFilePath.clear();
+			mCurrentFileName.clear();
 
 			//findTr(word); // поиск и вывод перевода
 		}
