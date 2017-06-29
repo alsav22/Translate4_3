@@ -91,7 +91,7 @@ bool Data::loadHash()
 
 //void input(QStringList& dirs)
 //{
-//	size_t n = GlobalVariables::getGlobalVariables().ListsFilesFromDirs.size();
+//	size_t n = GlobalVariables::getGlobalVariables().size();
 //	qDebug() << "Size hesh = " << n;
 //	dirs.sort();
 //	for (size_t i = 0; i < n; ++i)
