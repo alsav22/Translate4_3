@@ -16,6 +16,7 @@ public:
     const QString FILTER;
 	
 	QHash <QChar, QStringList> ListsFilesFromDirs; // контейнер для списков файлов из папок
+	                                               // хранит буквы имён папок, и списки звуковых файлов в папках
 	QMutex mutex; // синхронизация доступа при заполнении контейнера для списков файлов из папок
 
     QStringList LIST_EXT; // допустимые расширения аудиофайлов

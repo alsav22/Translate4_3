@@ -54,8 +54,32 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 
 	// загрузка и вывод кеша
 	if (loadCache())
+	{
+		// если кеш был сделан под другое расположение папки со звуковыми файлами,
+		// то, в начале пути к файлам в кеше, будет не то, что в GlobalVariables::PATH_SOUND
+		// например, в в GlobalVariables::PATH_SOUND: G:/Sound/StarDict_En-En/BrE,
+		// а в кеше: F:/Sound/BrE/a/about.wav
+		if (!mCacheFiles.begin().value().contains(GlobalVariables::getGlobalVariables().PATH_SOUND))
+		{
+			#ifdef DEBUG
+			qDebug() << "Cache is bad!";
+			#endif
+			// меняем, у файлов в кеше, путь к папке со звуковыми файлами
+			QHash <QString, QString>::iterator it = mCacheFiles.begin();
+			while (it != mCacheFiles.end())
+			{
+				it.value() = it.value().section('/', -2); // образаем по второй слеш с конца
+				it.value().prepend(GlobalVariables::getGlobalVariables().PATH_SOUND + "/"); // подставляем в начало правильный путь
+				++it;
+			}
+			#ifdef DEBUG
+			qDebug() << "Cache is good!";
+			#endif
+		}
+		
 		uiForm ->cacheWord ->addItems(mCacheFiles.keys());
-
+	}
+	
 	mpClipboard = QApplication::clipboard();
 
 	// при изменении буфера обмена, текст из буфера -> в строку ввода

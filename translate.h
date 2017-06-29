@@ -52,6 +52,7 @@ private:
 		QStringList mStrListFiles; // список файлов из папки
 		//QStringList mStrListCacheWord; // список кеша слов, для которых были найдены звуковые файлы
 		QHash <QString, QString> mCacheFiles; // контейнер для найденных звуковых файлов
+		                                      // (хранит слова и пути к звуковым файлам, типа: G:/Sound/StarDict_En-En/BrE/a/about.wav) 
 		quint32 mNumber; // количество файлов в папке
 
 		DictProgram dictProgram; // объект для переводов
