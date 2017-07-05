@@ -752,8 +752,10 @@ void MyWidget::choiceItemFromCacheWord(QListWidgetItem* item) // выбор слова из 
 // Воспроизведение файла
 void MyWidget::play(QString& AbsFilePath)
 {
+#ifdef DEBUG	
 	qDebug() << "AbsFilePath = " << AbsFilePath;
 	qDebug() << "mCurrentAbsFilePath = " << mCurrentAbsFilePath;
+#endif
 	if (!GlobalVariables::getGlobalVariables().LIST_EXT.contains(SoundFile::extractExt(AbsFilePath)))
 	{
 		uiForm ->labelOutput ->setText(QWidget::tr("Файл не подходит\nдля воспроизведения!"));
@@ -880,7 +882,8 @@ qDebug() <<  QWidget::tr("Нажата Enter. Найденный файл не изменился!");
 #ifdef DEBUG 
 qDebug() <<  QWidget::tr("Нажата Enter. Найденный файл изменился!");
 #endif
-		ind = getIndexString(mCurrentListFileName, word, "OneWord"); // поиск в списке файла из одного введённого слова
+		ind = getIndexString(mCurrentListFileName, word, "OneWord"); // поиск в списке файла 
+		                                                             // из одного введённого слова
 		if (ind != -1) // если такой файл есть в списке
 		{
 			setNewCurrentIndex(ind); // установка нового текущего индекса
