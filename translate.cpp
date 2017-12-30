@@ -44,7 +44,10 @@ void test()
 
 MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
                                       mpMessageBox(nullptr), mpCurrentSoundFile(nullptr), mNumber(0)
+									  
 {
+	mDirSound.setPath(GlobalVariables::getGlobalVariables().PATH_SOUND);
+	
 	uiForm ->setupUi(this);
 	setWindowTitle(QWidget::tr("Произношение-4"));
 	
@@ -95,6 +98,7 @@ MyWidget::MyWidget(QWidget *parent) : QWidget(parent), uiForm(new Ui::Form),
 
 	// при изменении буфера обмена, текст из буфера -> в строку ввода
 	QObject::connect(mpClipboard, SIGNAL(changed(QClipboard::Mode)), this, SLOT(fromClipboardToLineEdit()));
+	
 }
 
 void MyWidget::fromClipboardToLineEdit() // слот
@@ -1146,7 +1150,7 @@ void MyWidget::keyPressEvent(QKeyEvent* pe)
 
 ////////////////////////////////////////////////////////////////////////////
 // Добавление файлов
-// Определиться с mDirSound (пока файл добавляется в рабочий каталог), 
+// Определиться с mDirSound (пока файл добавляется в рабочий каталог (конструктор QDir() без аргументов создаёт)), 
 // и сделать добавление нового файла в хеш (с перезаписью файла хеша)
 
 
@@ -1175,8 +1179,10 @@ void MyWidget::acceptMessBox()
 
 void MyWidget::saveFile(QString& fileName, QString& fileNewName)
 {
-	//qDebug() << mDirSound.dirName();
-	if (QFile::copy(fileName, mDirSound.filePath(fileNewName)))
+	qDebug() << mDirSound.path();
+	QString DirName = QString(fileNewName[0]).toLower();
+	QString PathSave = mDirSound.path() + "/" + DirName + "/" + fileNewName;
+	if (QFile::copy(fileName, PathSave))
     {
         fileNewName.truncate(fileNewName.lastIndexOf('.'));
 		uiForm ->lineEditInput ->setText(fileNewName);
@@ -1204,9 +1210,22 @@ qDebug() << fileName;
 		uiForm ->lineEditInput ->setFocus();
 		return;
     }
-    
-	QString fileNewName = SoundFile::extractName(fileName); // имя выбранного файла с расширением
-    QString word = SoundFile::extractWord(fileNewName); // слово в имени файла
+	
+    QString fileNewName = SoundFile::extractName(fileName); // имя выбранного файла с расширением
+    //QString word = SoundFile::extractWord(fileNewName); // слово в имени файла
+	QString word = SoundFile::extractWordGroup(fileNewName); // имя файла без расширения
+	
+	//!!! Проверить название файла на допустимые символы. Есть слова на цифры начинаются, как с ними быть?
+    // Есть папка 0, там файлы которые на цифры начинаются, или на -, или на `, или на -`, или на точку. 
+    // Подумать, что с ними делать.
+	
+	if ((checkWord(word)) == 2)
+    {
+        uiForm ->labelOutput ->setText(QWidget::tr("Недопустимые символы\nв имени файла!"));
+		uiForm ->lineEditInput ->setFocus();
+		return;
+    }
+	
 	// поиск звуковых файлов по слову
 	if (findFiles(word)) // если файлы существуют
 	{
