@@ -80,7 +80,10 @@ bool SoundFile::startsWithOneWord(const QString& fileName, const QString& word)
 	QRegExp reg(QString("^"  + QRegExp::escape(word) + "[" + GlobalVariables::getGlobalVariables().delim + "\\.]"));
 	
 	if (reg.indexIn(fileName) != -1)
-			return true;
+	{
+		//qDebug() << fileName;	
+		return true;
+	}
 	return false;
 }
 
