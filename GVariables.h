@@ -16,7 +16,9 @@ public:
     const QString FILTER;
 	
 	QHash <QChar, QStringList> ListsFilesFromDirs; // контейнер для списков файлов из папок
-	                                               // хранит буквы имён папок, и списки звуковых файлов в папках
+	                                            // хранит буквы имён папок, и списки звуковых файлов в папках
+	bool changeHash; // флаг изменения содержимого контейнера (при добавлении/удалении файлов)
+	                // если изменился (true), то перезапись файла с контейнером
 	QMutex mutex; // синхронизация доступа при заполнении контейнера для списков файлов из папок
 
     QStringList LIST_EXT; // допустимые расширения аудиофайлов
@@ -28,7 +30,7 @@ public:
 	}
 
 private:
-	GlobalVariables() : delim ('_'), slash('/'),
+	GlobalVariables() :  delim ('_'), slash('/'), changeHash(false),
 		                FILE_NAME("Path_Sound.txt"),
 		                PATH_SOUND(""),
 						/*openFileName(false),*/

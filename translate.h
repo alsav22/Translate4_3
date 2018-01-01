@@ -5,8 +5,9 @@
 #include <QKeyEvent>
 #include "MyPlayer.h"
 #include "DictProgram.h"
+#include "GVariables.h"
 //#include "Storage.h"
-//#include "Data.h"
+#include "Data.h"
 #include "ui_Form.h"
 
 #include <Windows.h>
@@ -68,7 +69,7 @@ public:
 		inline bool    containsFileName(const QStringList& strListFiles, const QString& word);
 		inline bool    containsWordGroup(const QStringList& strListFiles, const QString& word);
 		inline void    showFilesFound();
-		inline void    saveFile(QString& fileName, QString& fileNewName);
+		inline void    saveFile(const QString& fileName, const QString& fileNewName);
 		inline qint32  getIndexString(const QStringList& strList, const QString& word, const QString mod);
 		inline quint32 uniqueFileName(const QStringList& strListFiles, const QString& word); // количство файлов с таким словом в списке
 		// индекс наименьшего элемента в списке
@@ -129,8 +130,8 @@ public:
 		void fromClipboardToLineEdit();
 
 		void choiceFileInExplorer();
-		void accept(QString& fileName, QString& fileNewName);
-        void reject();
+		void replaceFile(QString& fileName, QString& fileNewName);
+        void appendFile(const QString& fileName, const QString& fileNewName);
 		void acceptMessBox();
 
 		void setNewCurrentIndex(quint32 newInd);
@@ -146,8 +147,20 @@ public:
 protected:
 	void keyPressEvent(QKeyEvent* pe);
 	bool event(QEvent* pe); // переключение на английский ввод при активном окне
+	
 	void closeEvent(QCloseEvent* pcle)
 	{
+		if (GlobalVariables::getGlobalVariables().changeHash)
+		{
+			if(!Data::saveHash()) // перезапись файла хеша
+			{
+				QMessageBox error;
+				error.setIcon(QMessageBox::Critical);
+				error.setWindowTitle(QWidget::tr("Ошибка!"));
+				error.setText(QWidget::tr("Ошибка при перезаписи файла Hesh.dat!"));
+				error.exec();
+			}
+		}
 		if (saveCache())
 		{
 			qDebug() << "closeEvent is accept";
@@ -156,6 +169,12 @@ protected:
 		else 
 		{
 			qDebug() << "closeEvent is ignore";
+			QMessageBox error;
+			error.setIcon(QMessageBox::Critical);
+			error.setWindowTitle(QWidget::tr("Ошибка!"));
+			error.setText(QWidget::tr("Ошибка при перезаписи файла Cache.dat!"));
+			error.exec();
+			
 			pcle ->ignore();
 		}
 	}

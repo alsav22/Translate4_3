@@ -6,9 +6,9 @@
 #include <cstdlib>
 
 
-#ifdef DEBUG
-#include <vld.h>
-#endif
+//#ifdef DEBUG
+//#include <vld.h>
+//#endif
 
 
 int main(int argc, char **argv)

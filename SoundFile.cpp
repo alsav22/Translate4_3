@@ -30,8 +30,8 @@ QString SoundFile::extractWordGroup(QString fileName) // принимает имя файла с р
 	                                                  // возвращает слова (или слово) до первого delim ('_'),
 												      // если delim нет, то до последней '.'
 {
-	int i = fileName.indexOf(GlobalVariables::getGlobalVariables().delim);
-	if (i == -1)
+	int i;// = fileName.indexOf(GlobalVariables::getGlobalVariables().delim);
+	//if (i == -1)
 		i = fileName.lastIndexOf('.');
 	if (i != -1)
 		fileName.truncate(i);

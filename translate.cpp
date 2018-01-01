@@ -1154,12 +1154,12 @@ void MyWidget::keyPressEvent(QKeyEvent* pe)
 // и сделать добавление нового файла в хеш (с перезаписью файла хеша)
 
 
-void MyWidget::reject()
+void MyWidget::appendFile(const QString& fileName, const QString& fileNewName) // добавление файла
 {
-
+	saveFile(fileName, fileNewName);
 }
 
-void MyWidget::accept(QString& fileName, QString& fileNewName) // замена файла
+void MyWidget::replaceFile(QString& fileName, QString& fileNewName) // замена файла
 {
 	if (mDirSound.remove(mDirSound.absoluteFilePath(fileNewName)))
 	{
@@ -1177,24 +1177,45 @@ void MyWidget::acceptMessBox()
 	#endif
 }
 
-void MyWidget::saveFile(QString& fileName, QString& fileNewName)
+void MyWidget::saveFile(const QString& fileName, const QString& fileNewName)
 {
 	qDebug() << mDirSound.path();
 	QString DirName = QString(fileNewName[0]).toLower();
 	QString PathSave = mDirSound.path() + "/" + DirName + "/" + fileNewName;
 	if (QFile::copy(fileName, PathSave))
     {
-        fileNewName.truncate(fileNewName.lastIndexOf('.'));
-		uiForm ->lineEditInput ->setText(fileNewName);
-        uiForm ->lineEditInput ->setFocus();
+		//qDebug() << GlobalVariables::getGlobalVariables().ListsFilesFromDirs['a'];
+		GlobalVariables::getGlobalVariables().ListsFilesFromDirs[DirName[0]].append(fileNewName); // добавляем в хеш новый файл
+		//fileNewName.truncate(fileNewName.lastIndexOf('.'));
+		
+		// !!! добавление имени файла в текущие списки (списки имён, путей, таблицу виждетов и пр.???)
+		
+		mCurrentListFileName.append(fileNewName);
+		//mCurrentAbsFilePath.append(PathSave);
+		//showFilesFound();
+		// uiForm ->lineEditInput ->setText(fileNewName);
+        // uiForm ->lineEditInput ->setFocus();
         
 		uiForm ->labelOutput ->setText(QWidget::tr("Файл успешно добавлен!"));
+
+		//Data::saveHash(); // перезапись файла хеша
+		GlobalVariables::getGlobalVariables().changeHash = true; // флаг перезаписи Hash.dat 
 	}
     else
 	{
         uiForm ->labelOutput ->setText(QWidget::tr("Ошибка\nпри копировании файла!"));
 		uiForm ->lineEditInput ->setFocus();
 	}
+}
+
+void createFileName(const QStringList& lst, const QString& word, QString& fileNewName)
+{
+	qDebug() << lst << word << fileNewName;
+	//if (lst.size() == 1)
+	//{
+		fileNewName = word + GlobalVariables::getGlobalVariables().delim + QString::number(lst.size()) + '.' + SoundFile::extractExt(fileNewName );
+		qDebug() << fileNewName;
+	//}
 }
 
 void MyWidget::choiceFileInExplorer()
@@ -1218,6 +1239,7 @@ qDebug() << fileName;
 	//!!! Проверить название файла на допустимые символы. Есть слова на цифры начинаются, как с ними быть?
     // Есть папка 0, там файлы которые на цифры начинаются, или на -, или на `, или на -`, или на точку. 
     // Подумать, что с ними делать.
+
 	
 	if ((checkWord(word)) == 2)
     {
@@ -1230,6 +1252,7 @@ qDebug() << fileName;
 	if (findFiles(word)) // если файлы существуют
 	{
 		mCurrentWord = word; // текущее слово
+		qDebug() << mCurrentListFileName;
 		uiForm ->labelOutput ->setText(word);
 		showFilesFound(); // вывод в список имён найденных файлов 
 		
@@ -1245,15 +1268,19 @@ qDebug() << fileName;
 		QPushButton* cancelButton = mpMessageBox ->addButton(QWidget::tr("Отмена"),   QMessageBox::RejectRole);
 		
 		mpMessageBox ->exec();
+		
 		if (mpMessageBox ->clickedButton() == changeButton)
 		{
-				//accept(fileName, fileNewName); // замена файла
+				 replaceFile(fileName, fileNewName); // замена файла
 				 uiForm ->labelOutput ->setText(QWidget::tr("Файл заменён!"));
 				 uiForm ->lineEditInput ->setFocus();
 		}
 		else if (mpMessageBox ->clickedButton() == appendButton)
 		{
+			     createFileName(mCurrentListFileName, word, fileNewName); // создание нового имени файла
+			     appendFile(fileName, fileNewName); // добавление файла
 			     uiForm ->labelOutput ->setText(QWidget::tr("Файл добавлен!"));
+				 findFiles(word);
 				 uiForm ->lineEditInput ->setFocus();
 		}
 		else if (mpMessageBox ->clickedButton() == cancelButton)
@@ -1266,7 +1293,7 @@ qDebug() << fileName;
 		mpMessageBox = NULL;
 		return;
     }
-	else
+	else 
 		saveFile(fileName, fileNewName);
 }
 //////////////////////////////////////////////////////////////////////////////
