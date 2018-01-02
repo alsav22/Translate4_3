@@ -228,6 +228,15 @@ clock_t t1 = clock();
 #endif
    // список имён файлов из папки на первую букву слова
     mStrListFiles = GlobalVariables::getGlobalVariables().ListsFilesFromDirs.value(word[0]);
+	
+	/*QFile file("mStrListFiles.txt"); 
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&file);
+	foreach (QString str, mStrListFiles)
+	{
+		out << str << endl;
+	}
+	file.close();*/
 
 #ifdef DEBUG
 clock_t t2 = clock();
@@ -1191,6 +1200,7 @@ void MyWidget::saveFile(const QString& fileName, const QString& fileNewName)
 		// !!! добавление имени файла в текущие списки (списки имён, путей, таблицу виждетов и пр.???)
 		
 		mCurrentListFileName.append(fileNewName);
+		mStrListFiles.append(fileNewName);
 		//mCurrentAbsFilePath.append(PathSave);
 		//showFilesFound();
 		// uiForm ->lineEditInput ->setText(fileNewName);
@@ -1280,7 +1290,14 @@ qDebug() << fileName;
 			     createFileName(mCurrentListFileName, word, fileNewName); // создание нового имени файла
 			     appendFile(fileName, fileNewName); // добавление файла
 			     uiForm ->labelOutput ->setText(QWidget::tr("Файл добавлен!"));
-				 findFiles(word);
+				 if (findFiles(word))
+				 {
+					 showFilesFound(); // вывод в список имён найденных файлов
+					// новый текущий индекс (в списке - это индекс самого короткого имени файла (основное слово))
+					setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
+			
+					 play(mCurrentAbsFilePath); // воспроизведение текущего файла
+				 }
 				 uiForm ->lineEditInput ->setFocus();
 		}
 		else if (mpMessageBox ->clickedButton() == cancelButton)
