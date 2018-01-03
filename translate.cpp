@@ -936,7 +936,7 @@ qDebug() <<  QWidget::tr("Поиск файлов!");
 		
 		if (findFiles(word)) // если файлы существуют
 		{
-			showFilesFound(); // вывод в список имён найденных файлов
+			showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
 			// новый текущий индекс (в списке - это индекс самого короткого имени файла (основное слово))
 			setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
 			
@@ -1201,6 +1201,8 @@ void MyWidget::saveFile(const QString& fileName, const QString& fileNewName)
 		
 		mCurrentListFileName.append(fileNewName);
 		mStrListFiles.append(fileNewName);
+		mCurrentListAbsFilePath.append(PathSave);
+		mCurrentAbsFilePath = PathSave;
 		//mCurrentAbsFilePath.append(PathSave);
 		//showFilesFound();
 		// uiForm ->lineEditInput ->setText(fileNewName);
@@ -1261,10 +1263,11 @@ qDebug() << fileName;
 	// поиск звуковых файлов по слову
 	if (findFiles(word)) // если файлы существуют
 	{
-		mCurrentWord = word; // текущее слово
+		//mCurrentWord = word; // текущее слово
 		qDebug() << mCurrentListFileName;
 		uiForm ->labelOutput ->setText(word);
-		showFilesFound(); // вывод в список имён найденных файлов 
+		uiForm ->lineEditInput ->setText(word);
+		showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
 		
 	    mpMessageBox = new QMessageBox(this);
 	    QObject::connect(mpMessageBox, SIGNAL(accepted()), this, SLOT(acceptMessBox()));
@@ -1290,14 +1293,14 @@ qDebug() << fileName;
 			     createFileName(mCurrentListFileName, word, fileNewName); // создание нового имени файла
 			     appendFile(fileName, fileNewName); // добавление файла
 			     uiForm ->labelOutput ->setText(QWidget::tr("Файл добавлен!"));
-				 if (findFiles(word))
-				 {
-					 showFilesFound(); // вывод в список имён найденных файлов
+				 //if (findFiles(word))
+				 //{
+					 showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
 					// новый текущий индекс (в списке - это индекс самого короткого имени файла (основное слово))
-					setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
+					//setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
 			
-					 play(mCurrentAbsFilePath); // воспроизведение текущего файла
-				 }
+					 //play(mCurrentAbsFilePath); // воспроизведение текущего файла
+				 //}
 				 uiForm ->lineEditInput ->setFocus();
 		}
 		else if (mpMessageBox ->clickedButton() == cancelButton)
@@ -1311,7 +1314,29 @@ qDebug() << fileName;
 		return;
     }
 	else 
+	{
 		saveFile(fileName, fileNewName);
+		uiForm ->labelOutput ->setText(word);
+		uiForm ->lineEditInput ->setText(word);
+		//if (findFiles(word))
+		//{
+			showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
+			//новый текущий индекс (в списке - это индекс самого короткого имени файла (основное слово))
+		    //setNewCurrentIndex(getIndSmallestElement(mCurrentListFileName)); 
+			
+			play(mCurrentAbsFilePath); // воспроизведение текущего файла
+		//}
+		findTr(word); // поиск и вывод перевода
+		
+		//mCurrentWord = word; // текущее слово
+		
+		//uiForm ->labelOutput ->setText(word);
+		//uiForm ->lineEditInput ->setText(word);
+
+		//pressedEnter();
+		//showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
+		uiForm ->lineEditInput ->setFocus();
+	}
 }
 //////////////////////////////////////////////////////////////////////////////
 
