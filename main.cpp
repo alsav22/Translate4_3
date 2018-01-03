@@ -7,7 +7,7 @@
 
 
 #ifdef DEBUG
-#include <vld.h>
+//#include <vld.h>
 #endif
 
 
