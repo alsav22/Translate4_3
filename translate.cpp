@@ -1316,8 +1316,9 @@ qDebug() << fileName;
 	else 
 	{
 		saveFile(fileName, fileNewName);
+		
+		uiForm ->lineEditInput ->setText(word); // делать первым, иначе сотрёт слово в labelOutput
 		uiForm ->labelOutput ->setText(word);
-		uiForm ->lineEditInput ->setText(word);
 		//if (findFiles(word))
 		//{
 			showFilesFound(); // вывод в список имён найденных файлов (из mCurrentListFileName)
