@@ -18,6 +18,7 @@ class MyPlayer : public QWidget
     Ui::Form* uiForm;
 	QString mFileName;
 	int countLoopPlay;
+	int valueSpinBox;
 
 public: 
      

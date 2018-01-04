@@ -14,6 +14,7 @@ void MyPlayer::createMyPlayer(Ui::Form* ui)
 	
 	uiForm = ui;
 	uiForm ->volumeSlider ->setAudioOutput(mpAudioOutput);
+	//valueSpinBox = uiForm ->spinBox ->value();
 	
 	QObject::connect(this, SIGNAL(clearMediaObject()), mpMediaObject, SLOT(clear()));
 	QObject::connect(mpMediaObject, SIGNAL(finished()), this, SLOT(startPlay())); // повторы
@@ -24,10 +25,16 @@ void MyPlayer::createMyPlayer(Ui::Form* ui)
 void MyPlayer::play(const QString& fileName)
 {
     mFileName = fileName;
+	valueSpinBox = uiForm ->spinBox ->value();
 	if (!uiForm ->radioButtonRepeat ->isChecked())
 		countLoopPlay = 1;
 	else
-		countLoopPlay = uiForm ->spinBox ->value();
+	{
+		//countLoopPlay = uiForm ->spinBox ->value();
+	    countLoopPlay = valueSpinBox;
+		//valueSpinBox = uiForm ->spinBox ->value();
+	}
+	
 	
 	mpMediaObject ->clear(); // остановка воспроизведения и очистка очереди
 	startPlay();
@@ -40,25 +47,29 @@ void MyPlayer::startPlay()
 	{
 		if (n)
 		{
-		// пауза перед повтором
-		QEventLoop eventLoop;
-		QTimer timer;
-		timer.setSingleShot(true);
-		timer.setInterval(800);
+			// пауза перед повтором
+			QEventLoop eventLoop;
+			QTimer timer;
+			timer.setSingleShot(true);
+			timer.setInterval(2000);
 	
-		connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
-		timer.start();
-		eventLoop.exec();
+			connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
+			timer.start();
+			eventLoop.exec();
 		}
 		mpMediaObject ->setCurrentSource(Phonon::MediaSource(mFileName));
 		
-		mpMediaObject ->play();
 		++n;
 		--countLoopPlay;
+		if (uiForm ->radioButtonRepeat ->isChecked())
+			uiForm ->spinBox ->setValue(countLoopPlay);
+		
+		mpMediaObject ->play();
 	}
 	else
 	{
 		emit clearMediaObject(); // остановка воспроизведения и очистка очереди
 		n = 0;
+		uiForm ->spinBox ->setValue(valueSpinBox);
 	}
 }
