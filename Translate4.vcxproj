@@ -46,7 +46,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;DEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_PHONON_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;D:\Programs\Qt\4.8.5\include;.\GeneratedFiles\$(ConfigurationName);D:\Programs\Qt\4.8.5\include\qtmain;D:\Programs\Qt\4.8.5\include\QtCore;D:\Programs\Qt\4.8.5\include\QtGui;D:\Programs\Qt\4.8.5\include\phonon;.\;F:\Program Files (x86)\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;D:\Programs\Qt\4.8.5\include;.\GeneratedFiles\$(ConfigurationName);D:\Programs\Qt\4.8.5\include\qtmain;D:\Programs\Qt\4.8.5\include\QtCore;D:\Programs\Qt\4.8.5\include\QtGui;D:\Programs\Qt\4.8.5\include\phonon;.\;C:\Program Files (x86)\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -56,9 +56,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>D:\Programs\Qt\4.8.5\lib;F:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Programs\Qt\4.8.5\lib;C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>D:\Programs\Qt\4.8.5\lib\qtmaind.lib;D:\Programs\Qt\4.8.5\lib\QtCored4.lib;D:\Programs\Qt\4.8.5\lib\QtGuid4.lib;phonond4.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>D:\Programs\Qt\4.8.5\lib\qtmaind.lib;D:\Programs\Qt\4.8.5\lib\QtCored4.lib;D:\Programs\Qt\4.8.5\lib\QtGuid4.lib;phonond4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

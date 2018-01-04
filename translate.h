@@ -150,6 +150,9 @@ protected:
 	
 	void closeEvent(QCloseEvent* pcle)
 	{
+		QSplashScreen splash(QPixmap("6.png"));
+	    splash.show();
+		
 		if (GlobalVariables::getGlobalVariables().changeHash)
 		{
 			if(!Data::saveHash()) // перезапись файла хеша
@@ -177,6 +180,8 @@ protected:
 			
 			pcle ->ignore();
 		}
+		qDebug() << "exit!!!";
+		splash.close();
 	}
 
 protected:
